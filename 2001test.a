@@ -1,0 +1,894 @@
+; *************************************************************************************************
+;               2001test Version 1.0 / PET-2001 RAM/ROM-Test / Vossi 10/2016
+; *************************************************************************************************
+; Insert to PET2001 (no crtc) in $f800 socket
+!to "2001test.bin", plain
+!cpu 6502
+*= $f800
+		sei
+		lda #$20
+		ldx #$00
+cls:	sta $8000,x
+		sta $8100,x
+		sta $8200,x
+		sta $8300,x
+		inx
+		bne cls
+lf814:	lda lffac,x
+		beq lf81f
+		sta $8000,x
+		inx
+		bne lf814
+lf81f:	ldx #$08
+		stx $8078
+		stx $80a0
+		stx $80c8
+		stx $80f0
+		stx $8118
+		stx $8140
+		inx
+		stx $808d
+		stx $80b5
+		stx $80dd
+		stx $8105
+		stx $812d
+		stx $8155
+		stx $817d
+		stx $81a5
+		inx
+		stx $8092
+		stx $80ba
+		stx $80e2
+		stx $810a
+		stx $8132
+		stx $815a
+		stx $8182
+		stx $81aa
+		lda #$24
+		sta $807c
+		sta $80a4
+		sta $80cc
+		sta $80f4
+		sta $811c
+		sta $8144
+		lda #$2f
+		sta $8090
+		sta $80b8
+		sta $80e0
+		sta $8108
+		sta $8130
+		sta $8158
+		sta $8180
+		sta $81a8
+		ldx #$31
+		stx $8079
+		stx $808e
+		stx $8093
+		inx
+		stx $80a1
+		stx $80b6
+		stx $80bb
+		inx
+		stx $80c9
+		stx $80de
+		stx $80e3
+		inx
+		stx $80f1
+		stx $8106
+		stx $810b
+		inx
+		stx $8119
+		stx $812e
+		stx $8133
+		inx
+		stx $8141
+		stx $8156
+		stx $815b
+		inx
+		stx $817e
+		stx $8183
+		inx
+		stx $81a6
+		stx $81ab
+		stx $e813
+		ldx #$06
+lf8e3:	lda lff99,x
+		sta $827f,x
+		lda lff9f,x
+		sta $82a7,x
+		lda lffa5,x
+		sta $82cf,x
+		dex
+		bne lf8e3
+lf8f8:	txa
+lf8f9:	clc
+		adc $c000,x
+		clc
+		adc $c100,x
+		clc
+		adc $c200,x
+		clc
+		adc $c300,x
+		clc
+		adc $c400,x
+		clc
+		adc $c500,x
+		clc
+		adc $c600,x
+		clc
+		adc $c700,x
+		inx
+		bne lf8f9
+		tay
+		lsr
+		lsr
+		lsr
+		lsr
+		cmp #$0a
+		bcs lf92c
+		adc #$30
+		sta $807d
+		bne lf931
+lf92c:	sbc #$09
+		sta $807d
+lf931:	tya
+		and #$0f
+		cmp #$0a
+		bcs lf93f
+		adc #$30
+		sta $807e
+		bne lf944
+lf93f:	sbc #$09
+		sta $807e
+lf944:	tya
+		cmp #$5f
+		bne lf964
+		lda #$31
+		sta $8083
+lf94e:	lda #$31
+		sta $8082
+lf953:	lda #$30
+		sta $8081
+		lda #$0f
+		sta $8086
+		lda #$0b
+		sta $8087
+		bne lf9a3
+lf964:	cmp #$cb
+		bne lf96f
+		lda #$39
+		sta $8083
+		bne lf94e
+lf96f:	cmp #$47
+		bne lf97f
+		lda #$30
+		sta $8083
+		lda #$32
+		sta $8082
+		bne lf953
+lf97f:	cmp #$00
+		bne lf99e
+		lda #$05
+		sta $8081
+		lda #$0d
+		sta $8082
+		lda #$10
+		sta $8083
+		lda #$14
+		sta $8084
+		lda #$19
+		sta $8085
+		bne lf9a3
+lf99e:	lda #$3f
+		sta $8081
+lf9a3:	lda #$00
+		tax
+lf9a6:	clc
+		adc $d000,x
+		clc
+		adc $d100,x
+		clc
+		adc $d200,x
+		clc
+		adc $d300,x
+		clc
+		adc $d400,x
+		clc
+		adc $d500,x
+		clc
+		adc $d600,x
+		clc
+		adc $d700,x
+		inx
+		bne lf9a6
+		tay
+		lsr
+		lsr
+		lsr
+		lsr
+		cmp #$0a
+		bcs lf9d9
+		adc #$30
+		sta $80a5
+		bne lf9de
+lf9d9:	sbc #$09
+		sta $80a5
+lf9de:	tya
+		and #$0f
+		cmp #$0a
+		bcs lf9ec
+		adc #$30
+		sta $80a6
+		bne lf9f1
+lf9ec:	sbc #$09
+		sta $80a6
+lf9f1:	tya
+		cmp #$fc
+		bne lfa11
+		lda #$33
+		sta $80ab
+		lda #$31
+		sta $80aa
+lfa00:	lda #$30
+		sta $80a9
+		lda #$0f
+		sta $80ae
+		lda #$0b
+		sta $80af
+		bne lfa45
+lfa11:	cmp #$f1
+		bne lfa21
+		lda #$32
+		sta $80ab
+		lda #$32
+		sta $80aa
+		bne lfa00
+lfa21:	cmp #$00
+		bne lfa40
+		lda #$05
+		sta $80a9
+		lda #$0d
+		sta $80aa
+		lda #$10
+		sta $80ab
+		lda #$14
+		sta $80ac
+		lda #$19
+		sta $80ad
+		bne lfa45
+lfa40:	lda #$3f
+		sta $80a9
+lfa45:	lda #$00
+		tax
+lfa48:	clc
+		adc $e000,x
+		clc
+		adc $e100,x
+		clc
+		adc $e200,x
+		clc
+		adc $e300,x
+		clc
+		adc $e400,x
+		clc
+		adc $e500,x
+		clc
+		adc $e600,x
+		clc
+		adc $e700,x
+		inx
+		bne lfa48
+		tay
+		lsr
+		lsr
+		lsr
+		lsr
+		cmp #$0a
+		bcs lfa7b
+		adc #$30
+		sta $80cd
+		bne lfa80
+lfa7b:	sbc #$09
+		sta $80cd
+lfa80:	tya
+		and #$0f
+		cmp #$0a
+		bcs lfa8e
+		adc #$30
+		sta $80ce
+		bne lfa93
+lfa8e:	sbc #$09
+		sta $80ce
+lfa93:	tya
+		cmp #$92
+		bne lfab3
+		lda #$35
+		sta $80d3
+		lda #$31
+		sta $80d2
+lfaa2:	lda #$30
+		sta $80d1
+		lda #$0f
+		sta $80d6
+		lda #$0b
+		sta $80d7
+		bne lfae7
+lfab3:	cmp #$bf
+		bne lfac3
+		lda #$34
+		sta $80d3
+		lda #$32
+		sta $80d2
+		bne lfaa2
+lfac3:	cmp #$00
+		bne lfae2
+		lda #$05
+		sta $80d1
+		lda #$0d
+		sta $80d2
+		lda #$10
+		sta $80d3
+		lda #$14
+		sta $80d4
+		lda #$19
+		sta $80d5
+		bne lfae7
+lfae2:	lda #$3f
+		sta $80d1
+lfae7:	lda #$00
+		tax
+lfaea:	clc
+		adc $f000,x
+		clc
+		adc $f100,x
+		clc
+		adc $f200,x
+		clc
+		adc $f300,x
+		clc
+		adc $f400,x
+		clc
+		adc $f500,x
+		clc
+		adc $f600,x
+		clc
+		adc $f700,x
+		inx
+		bne lfaea
+		tay
+		lsr
+		lsr
+		lsr
+		lsr
+		cmp #$0a
+		bcs lfb1d
+		adc #$30
+		sta $80f5
+		bne lfb22
+lfb1d:	sbc #$09
+		sta $80f5
+lfb22:	tya
+		and #$0f
+		cmp #$0a
+		bcs lfb30
+		adc #$30
+		sta $80f6
+		bne lfb35
+lfb30:	sbc #$09
+		sta $80f6
+lfb35:	tya
+		cmp #$1c
+		bne lfb55
+		lda #$36
+		sta $80fb
+		lda #$31
+		sta $80fa
+lfb44:	lda #$30
+		sta $80f9
+		lda #$0f
+		sta $80fe
+		lda #$0b
+		sta $80ff
+		bne lfb89
+lfb55:	cmp #$63
+		bne lfb65
+		lda #$35
+		sta $80fb
+		lda #$32
+		sta $80fa
+		bne lfb44
+lfb65:	cmp #$00
+		bne lfb84
+		lda #$05
+		sta $80f9
+		lda #$0d
+		sta $80fa
+		lda #$10
+		sta $80fb
+		lda #$14
+		sta $80fc
+		lda #$19
+		sta $80fd
+		bne lfb89
+lfb84:	lda #$3f
+		sta $80f9
+lfb89:	lda #$00
+		tax
+lfb8c:	clc
+		adc $c800,x
+		clc
+		adc $c900,x
+		clc
+		adc $ca00,x
+		clc
+		adc $cb00,x
+		clc
+		adc $cc00,x
+		clc
+		adc $cd00,x
+		clc
+		adc $ce00,x
+		clc
+		adc $cf00,x
+		inx
+		bne lfb8c
+		tay
+		lsr
+		lsr
+		lsr
+		lsr
+		cmp #$0a
+		bcs lfbbf
+		adc #$30
+		sta $811d
+		bne lfbc4
+lfbbf:	sbc #$09
+		sta $811d
+lfbc4:	tya
+		and #$0f
+		cmp #$0a
+		bcs lfbd2
+		adc #$30
+		sta $811e
+		bne lfbd7
+lfbd2:	sbc #$09
+		sta $811e
+lfbd7:	tya
+		cmp #$fe
+		bne lfbf7
+		lda #$32
+		sta $8123
+		lda #$31
+		sta $8122
+lfbe6:	lda #$30
+		sta $8121
+		lda #$0f
+		sta $8126
+		lda #$0b
+		sta $8127
+		bne lfc2b
+lfbf7:	cmp #$f1
+		bne lfc07
+		lda #$31
+		sta $8123
+		lda #$32
+		sta $8122
+		bne lfbe6
+lfc07:	cmp #$00
+		bne lfc26
+		lda #$05
+		sta $8121
+		lda #$0d
+		sta $8122
+		lda #$10
+		sta $8123
+		lda #$14
+		sta $8124
+		lda #$19
+		sta $8125
+		bne lfc2b
+lfc26:	lda #$3f
+		sta $8121
+lfc2b:	lda #$00
+		tax
+lfc2e:	clc
+		adc $d800,x
+		clc
+		adc $d900,x
+		clc
+		adc $da00,x
+		clc
+		adc $db00,x
+		clc
+		adc $dc00,x
+		clc
+		adc $dd00,x
+		clc
+		adc $de00,x
+		clc
+		adc $df00,x
+		inx
+		bne lfc2e
+		tay
+		lsr
+		lsr
+		lsr
+		lsr
+		cmp #$0a
+		bcs lfc61
+		adc #$30
+		sta $8145
+		bne lfc66
+lfc61:	sbc #$09
+		sta $8145
+lfc66:	tya
+		and #$0f
+		cmp #$0a
+		bcs lfc74
+		adc #$30
+		sta $8146
+		bne lfc79
+lfc74:	sbc #$09
+		sta $8146
+lfc79:	tya
+		cmp #$49
+		bne lfc99
+		lda #$34
+		sta $814b
+lfc83:	lda #$31
+		sta $814a
+lfc88:	lda #$30
+		sta $8149
+		lda #$0f
+		sta $814e
+		lda #$0b
+		sta $814f
+		bne lfce3
+lfc99:	cmp #$79
+		bne lfca9
+		lda #$33
+		sta $814b
+lfca2:	lda #$32
+		sta $814a
+		bne lfc88
+lfca9:	cmp #$88
+		bne lfcb4
+		lda #$38
+		sta $814b
+		bne lfc83
+lfcb4:	cmp #$35
+		bne lfcbf
+		lda #$36
+		sta $814b
+		bne lfca2
+lfcbf:	cmp #$00
+		bne lfcde
+		lda #$05
+		sta $8149
+		lda #$0d
+		sta $814a
+		lda #$10
+		sta $814b
+		lda #$14
+		sta $814c
+		lda #$19
+		sta $814d
+		bne lfce3
+lfcde:	lda #$3f
+		sta $8149
+lfce3:	ldx #$00
+lfce5:	lda #$55
+lfce7:	sta $0000,x
+		sta $0100,x
+		sta $0200,x
+		sta $0300,x
+		cmp $0000,x
+		bne lfd25
+		cmp $0100,x
+		bne lfd25
+		cmp $0200,x
+		bne lfd25
+		cmp $0300,x
+		bne lfd25
+		rol
+		bcc lfce7
+		inx
+		bne lfce5
+		lda #$0f
+		sta $8096
+		lda #$0b
+		sta $8097
+		lda $8098
+		cmp #$04
+		bne lfd33
+		lda #$3f
+		sta $8098
+		bne lfd33
+lfd25:	ldx #$02
+		stx $8096
+		dex
+		stx $8097
+		lda #$04
+		sta $8098
+lfd33:	ldx #$00
+lfd35:	lda #$55
+lfd37:	sta $0400,x
+		sta $0500,x
+		sta $0600,x
+		sta $0700,x
+		cmp $0400,x
+		bne lfd75
+		cmp $0500,x
+		bne lfd75
+		cmp $0600,x
+		bne lfd75
+		cmp $0700,x
+		bne lfd75
+		rol
+		bcc lfd37
+		inx
+		bne lfd35
+		lda #$0f
+		sta $80be
+		lda #$0b
+		sta $80bf
+		lda $80c0
+		cmp #$04
+		bne lfd83
+		lda #$3f
+		sta $80c0
+		bne lfd83
+lfd75:	ldx #$02
+		stx $80be
+		dex
+		stx $80bf
+		lda #$04
+		sta $80c0
+lfd83:	ldx #$00
+lfd85:	lda #$55
+lfd87:	sta $0800,x
+		sta $0900,x
+		sta $0a00,x
+		sta $0b00,x
+		cmp $0800,x
+		bne lfdc5
+		cmp $0900,x
+		bne lfdc5
+		cmp $0a00,x
+		bne lfdc5
+		cmp $0b00,x
+		bne lfdc5
+		rol
+		bcc lfd87
+		inx
+		bne lfd85
+		lda #$0f
+		sta $80e6
+		lda #$0b
+		sta $80e7
+		lda $80e8
+		cmp #$04
+		bne lfdd3
+		lda #$3f
+		sta $80e8
+		bne lfdd3
+lfdc5:	ldx #$02
+		stx $80e6
+		dex
+		stx $80e7
+		lda #$04
+		sta $80e8
+lfdd3:	ldx #$00
+lfdd5:	lda #$55
+lfdd7:	sta $0c00,x
+		sta $0d00,x
+		sta $0e00,x
+		sta $0f00,x
+		cmp $0c00,x
+		bne lfe15
+		cmp $0d00,x
+		bne lfe15
+		cmp $0e00,x
+		bne lfe15
+		cmp $0f00,x
+		bne lfe15
+		rol
+		bcc lfdd7
+		inx
+		bne lfdd5
+		lda #$0f
+		sta $810e
+		lda #$0b
+		sta $810f
+		lda $8110
+		cmp #$04
+		bne lfe23
+		lda #$3f
+		sta $8110
+		bne lfe23
+lfe15:	ldx #$02
+		stx $810e
+		dex
+		stx $810f
+		lda #$04
+		sta $8110
+lfe23:	ldx #$00
+lfe25:	lda #$55
+lfe27:	sta $1000,x
+		sta $1100,x
+		sta $1200,x
+		sta $1300,x
+		cmp $1000,x
+		bne lfe65
+		cmp $1100,x
+		bne lfe65
+		cmp $1200,x
+		bne lfe65
+		cmp $1300,x
+		bne lfe65
+		rol
+		bcc lfe27
+		inx
+		bne lfe25
+		lda #$0f
+		sta $8136
+		lda #$0b
+		sta $8137
+		lda $8138
+		cmp #$04
+		bne lfe73
+		lda #$3f
+		sta $8138
+		bne lfe73
+lfe65:	ldx #$02
+		stx $8136
+		dex
+		stx $8137
+		lda #$04
+		sta $8138
+lfe73:	ldx #$00
+lfe75:	lda #$55
+lfe77:	sta $1400,x
+		sta $1500,x
+		sta $1600,x
+		sta $1700,x
+		cmp $1400,x
+		bne lfeb5
+		cmp $1500,x
+		bne lfeb5
+		cmp $1600,x
+		bne lfeb5
+		cmp $1700,x
+		bne lfeb5
+		rol
+		bcc lfe77
+		inx
+		bne lfe75
+		lda #$0f
+		sta $815e
+		lda #$0b
+		sta $815f
+		lda $8160
+		cmp #$04
+		bne lfec3
+		lda #$3f
+		sta $8160
+		bne lfec3
+lfeb5:	ldx #$02
+		stx $815e
+		dex
+		stx $815f
+		lda #$04
+		sta $8160
+lfec3:	ldx #$00
+lfec5:	lda #$55
+lfec7:	sta $1800,x
+		sta $1900,x
+		sta $1a00,x
+		sta $1b00,x
+		cmp $1800,x
+		bne lff05
+		cmp $1900,x
+		bne lff05
+		cmp $1a00,x
+		bne lff05
+		cmp $1b00,x
+		bne lff05
+		rol
+		bcc lfec7
+		inx
+		bne lfec5
+		lda #$0f
+		sta $8186
+		lda #$0b
+		sta $8187
+		lda $8188
+		cmp #$04
+		bne lff13
+		lda #$3f
+		sta $8188
+		bne lff13
+lff05:	ldx #$02
+		stx $8186
+		dex
+		stx $8187
+		lda #$04
+		sta $8188
+lff13:	ldx #$00
+lff15:	lda #$55
+lff17:	sta $1c00,x
+		sta $1d00,x
+		sta $1e00,x
+		sta $1f00,x
+		cmp $1c00,x
+		bne lff55
+		cmp $1d00,x
+		bne lff55
+		cmp $1e00,x
+		bne lff55
+		cmp $1f00,x
+		bne lff55
+		rol
+		bcc lff17
+		inx
+		bne lff15
+		lda #$0f
+		sta $81ae
+		lda #$0b
+		sta $81af
+		lda $81b0
+		cmp #$04
+		bne lff63
+		lda #$3f
+		sta $81b0
+		bne lff63
+lff55:	ldx #$02
+		stx $81ae
+		dex
+		stx $81af
+		lda #$04
+		sta $81b0
+lff63:	ldy $82a7
+		ldx #$27
+lff68:	lda $827f,x
+		sta $8280,x
+		dex
+		bne lff68
+		sty $8280
+		ldy $82cf
+		ldx #$27
+lff79:	lda $82a7,x
+		sta $82a8,x
+		dex
+		bne lff79
+		sty $82a8
+		ldy $82f7
+		ldx #$27
+lff8a:	lda $82cf,x
+		sta $82d0,x
+		dex
+		bne lff8a
+		sty $82d0
+		jmp lf8f8
+
+lff99:	!byte $ea, $ec, $61, $ec, $7e, $fb
+
+lff9f:	!byte $7e, $ec, $7e, $ec, $7e, $e1
+
+lffa5:	!byte $20, $7e, $20, $e2, $7e, $7c
+
+		!byte $20
+
+lffac:	!byte $10, $05, $14, $20, $2a, $32, $30, $30
+		!byte $31, $14, $05, $13, $14, $2a, $20, $16
+		!byte $31, $2e, $30, $20, $20, $20, $14, $05
+		!byte $13, $14, $20, $08, $37, $2d, $12, $0f
+		!byte $0d, $20, $09, $0e, $20, $08, $36, $21
+		!byte $03, $08, $0b, $13, $15, $0d, $38, $20
+		!byte $20, $36, $35, $34, $30, $2d, $20, $20
+		!byte $20, $20, $20, $20, $20, $36, $35, $35
+		!byte $30, $20, $28, $03, $29, $20, $16, $0f
+		!byte $13, $13, $09, $20, $32, $30, $31, $36
+
+Vectors:
+		!byte $00, $f8, $00, $f8

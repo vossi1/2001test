@@ -1,0 +1,23 @@
+2001test.a
+
+PET2001 RAM/ROM-TEST (no CRTC) (c) by Vossi 10/2016
+Insert to PET2001 in $f800 socket
+
+Version 1.0
+
+I had some trouble with the 6540-ROMs in my PETs and built an special adapter to read them in my EPROM-burner.
+But it's not possible to read them in my TL866, Merlin/Promenade C1 and the Tiny Eprommer :(
+The 6540 need a clock to operate correctly!
+
+I decided to code a test-kernel that verifies the 8-bit-checksums in the PET ;)
+Also I appended a RAM-test for the whole 8kB.
+You have to burn the image in an EPROM and plug it with an adapter in the H7-socket.
+It also runs in a 2532-EPROM (upper half) in a 2316B-board in the H4-socket.
+
+The test reads the 8-bit-checksums (without carry) from the ROMs in H1 - H6.
+It verifies the checksums with the romsets 6540-011 to 6540-026.
+For testing the 6540-018 or 6540-026, just plug it in the H6-socket.
+The ROM-test needs no RAM to run - only the screen-memory for visibility ;)
+
+2001TEST also checks the RAMs with 55 / AA in a continous loop.
+But it's not possible to recognize the I or J chip because the test needs 2047 bytes and there is only 1 byte space left ;)
