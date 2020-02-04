@@ -1,5 +1,5 @@
 ; *************************************************************************************************
-;               2001test Version 1.0 / PET-2001 RAM/ROM-Test / Vossi 10/2016
+;               2001test Version 1.1 / PET-2001 RAM/ROM-Test / Vossi 01/2020
 ; *************************************************************************************************
 ; Insert to PET2001 (no crtc) in $f800 socket
 
@@ -22,13 +22,15 @@
 		checksum_14 =	$49
 		checksum_15 =	$92
 		checksum_16 =	$1c
+		checksum_18 =	$88
 		checksum_19 =	$cb
 		checksum_20 =	$47
 		checksum_21 =	$f1
 		checksum_22 =	$f1
-		checksum_23 =	$
+		checksum_23 =	$79
 		checksum_24 =	$bf
 		checksum_25 =	$63
+		checksum_26 =	$35
 
 *= $f800
 		sei
@@ -563,349 +565,356 @@ TestH6:
 +		sbc #$09
 		sta screen+line*  8 +  6
 ++		tya							; restore checksum from Y
-
-
-		cmp #$49
-		bne lfc99
-		lda #$34
-		sta $814b
-lfc83:	lda #$31
-		sta $814a
-lfc88:	lda #$30
-		sta $8149
-		lda #$0f
-		sta $814e
-		lda #$0b
-		sta $814f
-		bne lfce3
-lfc99:	cmp #$79
-		bne lfca9
-		lda #$33
-		sta $814b
-lfca2:	lda #$32
-		sta $814a
-		bne lfc88
-lfca9:	cmp #$88
-		bne lfcb4
-		lda #$38
-		sta $814b
-		bne lfc83
-lfcb4:	cmp #$35
-		bne lfcbf
-		lda #$36
-		sta $814b
-		bne lfca2
-lfcbf:	cmp #$00
-		bne lfcde
-		lda #$05
-		sta $8149
-		lda #$0d
-		sta $814a
-		lda #$10
-		sta $814b
-		lda #$14
-		sta $814c
-		lda #$19
-		sta $814d
-		bne lfce3
-lfcde:	lda #$3f
-		sta $8149
-lfce3:	ldx #$00
-lfce5:	lda #$55
-lfce7:	sta $0000,x
+		cmp #checksum_14			; compare if 014
+		bne not_14					; jump, if not equal
+		lda #'4'
+		sta screen+line*  8 + 11
+h6_01x:	lda #'1'
+		sta screen+line*  8 + 10
+h6_0xx:	lda #'0'
+		sta screen+line*  8 +  9
+		lda #'o'
+		sta screen+line*  8 + 14
+		lda #'k'
+		sta screen+line*  8 + 15
+		bne RamTest0000				; jump to ram-test
+not_14:	cmp #checksum_23			; compare if 023
+		bne not_23
+		lda #'3'
+		sta screen+line*  8 + 11
+h6_02x:	lda #'2'
+		sta screen+line*  8 + 10
+		bne h6_0xx:
+not_23:	cmp #checksum_18			; compare if 018
+		bne not_18
+		lda #'8'
+		sta screen+line*  8 + 11
+		bne h6_01x
+not_18:	cmp #checksum_26			; compare if 026
+		bne not_26
+		lda #'6'
+		sta screen+line*  8 + 11
+		bne h6_02x
+not_26:	cmp #$00					; compare if empty
+		bne h6_bad
+		lda #'e'
+		sta screen+line*  8 +  9
+		lda #'m'
+		sta screen+line*  8 + 10
+		lda #'p'
+		sta screen+line*  8 + 11
+		lda #'t'
+		sta screen+line*  8 + 12
+		lda #'y'
+		sta screen+line*  8 + 13
+		bne RamTest0000
+h6_bad:	lda #'?'					; bad or unknown rom
+		sta screen+line*  8 +  9
+RamTest0000:
+		ldx #$00
+--		lda #$55
+-		sta $0000,x
 		sta $0100,x
 		sta $0200,x
 		sta $0300,x
 		cmp $0000,x
-		bne lfd25
+		bne i1_bad
 		cmp $0100,x
-		bne lfd25
+		bne i1_bad
 		cmp $0200,x
-		bne lfd25
+		bne i1_bad
 		cmp $0300,x
-		bne lfd25
+		bne i1_bad
 		rol
-		bcc lfce7
+		bcc -
 		inx
-		bne lfce5
-		lda #$0f
-		sta $8096
-		lda #$0b
-		sta $8097
-		lda $8098
-		cmp #$04
-		bne lfd33
-		lda #$3f
-		sta $8098
-		bne lfd33
-lfd25:	ldx #$02
-		stx $8096
-		dex
-		stx $8097
-		lda #$04
-		sta $8098
-lfd33:	ldx #$00
-lfd35:	lda #$55
-lfd37:	sta $0400,x
+		bne --
+		lda #'o'
+		sta screen+line*  3 + 30
+		lda #'k'
+		sta screen+line*  3 + 31
+		lda screen+line*  3 + 32
+		cmp #'d'
+		bne RamTest0400
+		lda #'?'
+		sta screen+line*  3 + 32
+		bne RamTest0400
+i1_bad:	ldx #'b'
+		stx screen+line*  3 + 30
+		dex							; 'a'
+		stx screen+line*  3 + 31
+		lda #'d'
+		sta screen+line*  3 + 32
+RamTest0400:
+		ldx #$00
+--		lda #$55
+-		sta $0400,x
 		sta $0500,x
 		sta $0600,x
 		sta $0700,x
 		cmp $0400,x
-		bne lfd75
+		bne i2_bad
 		cmp $0500,x
-		bne lfd75
+		bne i2_bad
 		cmp $0600,x
-		bne lfd75
+		bne i2_bad
 		cmp $0700,x
-		bne lfd75
+		bne i2_bad
 		rol
-		bcc lfd37
+		bcc -
 		inx
-		bne lfd35
-		lda #$0f
-		sta $80be
-		lda #$0b
-		sta $80bf
-		lda $80c0
-		cmp #$04
-		bne lfd83
-		lda #$3f
-		sta $80c0
-		bne lfd83
-lfd75:	ldx #$02
-		stx $80be
-		dex
-		stx $80bf
-		lda #$04
-		sta $80c0
-lfd83:	ldx #$00
-lfd85:	lda #$55
-lfd87:	sta $0800,x
+		bne --
+		lda #'o'
+		sta screen+line*  4 + 30
+		lda #'k'
+		sta screen+line*  4 + 31
+		lda screen+line*  4 + 32
+		cmp #'d'
+		bne RamTest0800
+		lda #'?'
+		sta screen+line*  4 + 32
+		bne RamTest0800
+i2_bad:	ldx #'b'
+		stx screen+line*  4 + 30
+		dex							; 'a'
+		stx screen+line*  4 + 31
+		lda #'d'
+		sta screen+line*  4 + 32
+RamTest0800:
+		ldx #$00
+--		lda #$55
+-		sta $0800,x
 		sta $0900,x
 		sta $0a00,x
 		sta $0b00,x
 		cmp $0800,x
-		bne lfdc5
+		bne i3_bad
 		cmp $0900,x
-		bne lfdc5
+		bne i3_bad
 		cmp $0a00,x
-		bne lfdc5
+		bne i3_bad
 		cmp $0b00,x
-		bne lfdc5
+		bne i3_bad
 		rol
-		bcc lfd87
+		bcc -
 		inx
-		bne lfd85
-		lda #$0f
-		sta $80e6
-		lda #$0b
-		sta $80e7
-		lda $80e8
-		cmp #$04
-		bne lfdd3
-		lda #$3f
-		sta $80e8
-		bne lfdd3
-lfdc5:	ldx #$02
-		stx $80e6
-		dex
-		stx $80e7
-		lda #$04
-		sta $80e8
-lfdd3:	ldx #$00
-lfdd5:	lda #$55
-lfdd7:	sta $0c00,x
+		bne --
+		lda #'o'
+		sta screen+line*  5 + 30
+		lda #'k'
+		sta screen+line*  5 + 31
+		lda screen+line*  5 + 32
+		cmp #'d'
+		bne RamTest0c00
+		lda #'?'
+		sta screen+line*  5 + 32
+		bne RamTest0c00
+i3_bad:	ldx #'b'
+		stx screen+line*  5 + 30
+		dex							; 'a'
+		stx screen+line*  5 + 31
+		lda #'d'
+		sta screen+line*  5 + 32
+RamTest0c00:
+		ldx #$00
+--		lda #$55
+-		sta $0c00,x
 		sta $0d00,x
 		sta $0e00,x
 		sta $0f00,x
 		cmp $0c00,x
-		bne lfe15
+		bne i4_bad
 		cmp $0d00,x
-		bne lfe15
+		bne i4_bad
 		cmp $0e00,x
-		bne lfe15
+		bne i4_bad
 		cmp $0f00,x
-		bne lfe15
+		bne i4_bad
 		rol
-		bcc lfdd7
+		bcc -
 		inx
-		bne lfdd5
-		lda #$0f
-		sta $810e
-		lda #$0b
-		sta $810f
-		lda $8110
-		cmp #$04
-		bne lfe23
-		lda #$3f
-		sta $8110
-		bne lfe23
-lfe15:	ldx #$02
-		stx $810e
-		dex
-		stx $810f
-		lda #$04
-		sta $8110
-lfe23:	ldx #$00
-lfe25:	lda #$55
-lfe27:	sta $1000,x
+		bne --
+		lda #'o'
+		sta screen+line*  6 + 30
+		lda #'k'
+		sta screen+line*  6 + 31
+		lda screen+line*  6 + 32
+		cmp #'d'
+		bne RamTest1000
+		lda #'?'
+		sta screen+line*  6 + 32
+		bne RamTest1000
+i4_bad:	ldx #'b'
+		stx screen+line*  6 + 30
+		dex							; 'a'
+		stx screen+line*  6 + 31
+		lda #'d'
+		sta screen+line*  6 + 32
+RamTest1000:
+		ldx #$00
+--		lda #$55
+-		sta $1000,x
 		sta $1100,x
 		sta $1200,x
 		sta $1300,x
 		cmp $1000,x
-		bne lfe65
+		bne i5_bad
 		cmp $1100,x
-		bne lfe65
+		bne i5_bad
 		cmp $1200,x
-		bne lfe65
+		bne i5_bad
 		cmp $1300,x
-		bne lfe65
+		bne i5_bad
 		rol
-		bcc lfe27
+		bcc -
 		inx
-		bne lfe25
-		lda #$0f
-		sta $8136
-		lda #$0b
-		sta $8137
-		lda $8138
-		cmp #$04
-		bne lfe73
-		lda #$3f
-		sta $8138
-		bne lfe73
-lfe65:	ldx #$02
-		stx $8136
-		dex
-		stx $8137
-		lda #$04
-		sta $8138
-lfe73:	ldx #$00
-lfe75:	lda #$55
-lfe77:	sta $1400,x
+		bne --
+		lda #'o'
+		sta screen+line*  7 + 30
+		lda #'k'
+		sta screen+line*  7 + 31
+		lda screen+line*  7 + 32
+		cmp #'d'
+		bne RamTest1400
+		lda #'?'
+		sta screen+line*  7 + 32
+		bne RamTest1400
+i5_bad:	ldx #'b'
+		stx screen+line*  7 + 30
+		dex							; 'a'
+		stx screen+line*  7 + 31
+		lda #'d'
+		sta screen+line*  7 + 32
+RamTest1400:
+		ldx #$00
+--		lda #$55
+-		sta $1400,x
 		sta $1500,x
 		sta $1600,x
 		sta $1700,x
 		cmp $1400,x
-		bne lfeb5
+		bne i6_bad
 		cmp $1500,x
-		bne lfeb5
+		bne i6_bad
 		cmp $1600,x
-		bne lfeb5
+		bne i6_bad
 		cmp $1700,x
-		bne lfeb5
+		bne i6_bad
 		rol
-		bcc lfe77
+		bcc -
 		inx
-		bne lfe75
-		lda #$0f
-		sta $815e
-		lda #$0b
-		sta $815f
-		lda $8160
-		cmp #$04
-		bne lfec3
-		lda #$3f
-		sta $8160
-		bne lfec3
-lfeb5:	ldx #$02
-		stx $815e
-		dex
-		stx $815f
-		lda #$04
-		sta $8160
-lfec3:	ldx #$00
-lfec5:	lda #$55
-lfec7:	sta $1800,x
+		bne --
+		lda #'o'
+		sta screen+line*  8 + 30
+		lda #'k'
+		sta screen+line*  8 + 31
+		lda screen+line*  8 + 32
+		cmp #'d'
+		bne RamTest1800
+		lda #'?'
+		sta screen+line*  8 + 32
+		bne RamTest1800
+i6_bad:	ldx #'b'
+		stx screen+line*  8 + 30
+		dex							; 'a'
+		stx screen+line*  8 + 31
+		lda #'d'
+		sta screen+line*  8 + 32
+RamTest1800:
+		ldx #$00
+--		lda #$55
+-		sta $1800,x
 		sta $1900,x
 		sta $1a00,x
 		sta $1b00,x
 		cmp $1800,x
-		bne lff05
+		bne i7_bad
 		cmp $1900,x
-		bne lff05
+		bne i7_bad
 		cmp $1a00,x
-		bne lff05
+		bne i7_bad
 		cmp $1b00,x
-		bne lff05
+		bne i7_bad
 		rol
-		bcc lfec7
+		bcc -
 		inx
-		bne lfec5
-		lda #$0f
-		sta $8186
-		lda #$0b
-		sta $8187
-		lda $8188
-		cmp #$04
-		bne lff13
-		lda #$3f
-		sta $8188
-		bne lff13
-lff05:	ldx #$02
-		stx $8186
-		dex
-		stx $8187
-		lda #$04
-		sta $8188
-lff13:	ldx #$00
-lff15:	lda #$55
-lff17:	sta $1c00,x
+		bne --
+		lda #'o'
+		sta screen+line*  9 + 30
+		lda #'k'
+		sta screen+line*  9 + 31
+		lda screen+line*  9 + 32
+		cmp #'d'
+		bne RamTest1c00
+		lda #'?'
+		sta screen+line*  9 + 32
+		bne RamTest1c00
+i7_bad:	ldx #'b'
+		stx screen+line*  9 + 30
+		dex							; 'a'
+		stx screen+line*  9 + 31
+		lda #'d'
+		sta screen+line*  9 + 32
+RamTest1c00:
+		ldx #$00
+--		lda #$55
+-		sta $1c00,x
 		sta $1d00,x
 		sta $1e00,x
 		sta $1f00,x
 		cmp $1c00,x
-		bne lff55
+		bne i8_bad
 		cmp $1d00,x
-		bne lff55
+		bne i8_bad
 		cmp $1e00,x
-		bne lff55
+		bne i8_bad
 		cmp $1f00,x
-		bne lff55
+		bne i8_bad
 		rol
-		bcc lff17
+		bcc -
 		inx
-		bne lff15
-		lda #$0f
-		sta $81ae
-		lda #$0b
-		sta $81af
-		lda $81b0
-		cmp #$04
-		bne lff63
-		lda #$3f
-		sta $81b0
-		bne lff63
-lff55:	ldx #$02
-		stx $81ae
+		bne --
+		lda #'o'
+		sta screen+line* 10 + 30
+		lda #'k'
+		sta screen+line* 10 + 31
+		lda screen+line* 10 + 32
+		cmp #'d'
+		bne PETAnimation
+		lda #'?'
+		sta screen+line* 10 + 32
+		bne PETAnimation
+i8_bad:	ldx #'b'
+		stx screen+line* 10 + 30
+		dex							; 'a'
+		stx screen+line* 10 + 31
+		lda #'d'
+		sta screen+line* 10 + 32
+PETAnimation:
+		ldy screen+line* 16 + 39
+		ldx #39
+-		lda screen+line* 16 -  1,x
+		sta screen+line* 16,x
 		dex
-		stx $81af
-		lda #$04
-		sta $81b0
-lff63:	ldy $82a7
-		ldx #$27
-lff68:	lda $827f,x
-		sta $8280,x
+		bne -
+		sty screen+line* 16
+		ldy screen+line* 17 + 39
+		ldx #39
+-		lda screen+line* 17 -  1,x
+		sta screen+line* 17,x
 		dex
-		bne lff68
-		sty $8280
-		ldy $82cf
-		ldx #$27
-lff79:	lda $82a7,x
-		sta $82a8,x
+		bne -
+		sty screen+line* 17
+		ldy screen+line* 18 + 39
+		ldx #39
+-		lda screen+line* 18 -  1,x
+		sta screen+line* 18,x
 		dex
-		bne lff79
-		sty $82a8
-		ldy $82f7
-		ldx #$27
-lff8a:	lda $82cf,x
-		sta $82d0,x
-		dex
-		bne lff8a
-		sty $82d0
+		bne -
+		sty screen+line* 18
 		jmp TestH1
 
-pet1:	!byte $ea, $ec, $61, $ec, $7e, $fb
+pet1:	!byte $ea, $ec, $61, $ec, $7e, $fb	; PET-graphics
 pet2:	!byte $7e, $ec, $7e, $ec, $7e, $e1
 pet3:	!byte $20, $7e, $20, $e2, $7e, $7c
 
