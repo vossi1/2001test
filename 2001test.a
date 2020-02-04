@@ -2,6 +2,9 @@
 ;               2001test Version 1.1 / PET-2001 RAM/ROM-Test / Vossi 01/2020
 ; *************************************************************************************************
 ; Insert to PET2001 (no crtc) in $f800 socket
+;
+;V1.0 initial version
+;V1.1 checksums now with carry
 
 !cpu 6502
 !to "2001test.bin", plain
@@ -16,21 +19,21 @@
 !addr	rom_h5		=	$c800
 !addr	rom_h6		=	$d800
 !addr	rom_h7		=	$f800
-		checksum_11 =	$5f			; rom checksums
-		checksum_12 =	$fe
-		checksum_13 =	$fc
-		checksum_14 =	$49
-		checksum_15 =	$92
-		checksum_16 =	$1c
-		checksum_18 =	$88
-		checksum_19 =	$cb
-		checksum_20 =	$47
-		checksum_21 =	$f1
-		checksum_22 =	$f1
-		checksum_23 =	$79
-		checksum_24 =	$bf
-		checksum_25 =	$63
-		checksum_26 =	$35
+		checksum_11 =	$4b			; rom checksums with carry
+		checksum_12 =	$e6
+		checksum_13 =	$32
+		checksum_14 =	$6b
+		checksum_15 =	$60
+		checksum_16 =	$12
+		checksum_18 =	$a6
+		checksum_19 =	$b6
+		checksum_20 =	$ed
+		checksum_21 =	$89
+		checksum_22 =	$9c
+		checksum_23 =	$25
+		checksum_24 =	$c0
+		checksum_25 =	$89
+		checksum_26 =	$93
 
 *= $f800
 		sei
@@ -130,24 +133,18 @@
 		bne -
 TestH1:
 		txa							; clear A
--		clc							; clear carry for calculation
-		adc rom_h1,x				; calculate checksum of rom h1
-		clc
+		clc							; clear carry for calculation
+-		adc rom_h1,x				; calculate checksum of rom h1
 		adc rom_h1+$100,x
-		clc
 		adc rom_h1+$200,x
-		clc
 		adc rom_h1+$300,x
-		clc
 		adc rom_h1+$400,x
-		clc
 		adc rom_h1+$500,x
-		clc
 		adc rom_h1+$600,x
-		clc
 		adc rom_h1+$700,x
 		inx
 		bne -
+		adc#$00
 		tay							; remember checksum in Y
 		lsr							; chose high nibble
 		lsr
@@ -213,24 +210,18 @@ h1_bad:	lda #'?'					; bad or unknown rom
 TestH2:
 		lda #$00
 		tax
--		clc							; clear carry for calculation
-		adc rom_h2,x				; calculate checksum of rom h2
-		clc
+		clc							; clear carry for calculation
+-		adc rom_h2,x				; calculate checksum of rom h2
 		adc rom_h2+$100,x
-		clc
 		adc rom_h2+$200,x
-		clc
 		adc rom_h2+$300,x
-		clc
 		adc rom_h2+$400,x
-		clc
 		adc rom_h2+$500,x
-		clc
 		adc rom_h2+$600,x
-		clc
 		adc rom_h2+$700,x
 		inx
 		bne -
+		adc#$00
 		tay							; save checksum in Y
 		lsr							; chose high nibble
 		lsr
@@ -291,24 +282,18 @@ h2_bad:	lda #'?'					; bad or unknown rom
 TestH3:
 		lda #$00
 		tax
--		clc							; clear carry for calculation
-		adc rom_h3,x				; calculate checksum of rom h3
-		clc
+		clc							; clear carry for calculation
+-		adc rom_h3,x				; calculate checksum of rom h3
 		adc rom_h3+$100,x
-		clc
 		adc rom_h3+$200,x
-		clc
 		adc rom_h3+$300,x
-		clc
 		adc rom_h3+$400,x
-		clc
 		adc rom_h3+$500,x
-		clc
 		adc rom_h3+$600,x
-		clc
 		adc rom_h3+$700,x
 		inx
 		bne -
+		adc#$00
 		tay							; save checksum in Y
 		lsr							; chose high nibble
 		lsr
@@ -369,24 +354,18 @@ h3_bad:	lda #'?'					; bad or unknown rom
 TestH4:
 		lda #$00
 		tax
--		clc							; clear carry for calculation
-		adc rom_h4,x				; calculate checksum of rom h4
-		clc
+		clc							; clear carry for calculation
+-		adc rom_h4,x				; calculate checksum of rom h4
 		adc rom_h4+$100,x
-		clc
 		adc rom_h4+$200,x
-		clc
 		adc rom_h4+$300,x
-		clc
 		adc rom_h4+$400,x
-		clc
 		adc rom_h4+$500,x
-		clc
 		adc rom_h4+$600,x
-		clc
 		adc rom_h4+$700,x
 		inx
 		bne -
+		adc#$00
 		tay							; save checksum in Y
 		lsr							; chose high nibble
 		lsr
@@ -447,24 +426,18 @@ h4_bad:	lda #'?'					; bad or unknown rom
 TestH5:
 		lda #$00
 		tax
--		clc							; clear carry for calculation
-		adc rom_h5,x				; calculate checksum of rom h5
-		clc
+		clc							; clear carry for calculation
+-		adc rom_h5,x				; calculate checksum of rom h5
 		adc rom_h5+$100,x
-		clc
 		adc rom_h5+$200,x
-		clc
 		adc rom_h5+$300,x
-		clc
 		adc rom_h5+$400,x
-		clc
 		adc rom_h5+$500,x
-		clc
 		adc rom_h5+$600,x
-		clc
 		adc rom_h5+$700,x
 		inx
 		bne -
+		adc#$00
 		tay							; save checksum in Y
 		lsr							; chose high nibble
 		lsr
@@ -525,24 +498,18 @@ h5_bad:	lda #'?'					; bad or unknown rom
 TestH6:
 		lda #$00
 		tax
--		clc							; clear carry for calculation
-		adc rom_h6,x				; calculate checksum of rom h6
-		clc
+		clc							; clear carry for calculation
+-		adc rom_h6,x				; calculate checksum of rom h6
 		adc rom_h6+$100,x
-		clc
 		adc rom_h6+$200,x
-		clc
 		adc rom_h6+$300,x
-		clc
 		adc rom_h6+$400,x
-		clc
 		adc rom_h6+$500,x
-		clc
 		adc rom_h6+$600,x
-		clc
 		adc rom_h6+$700,x
 		inx
 		bne -
+		adc#$00
 		tay							; save checksum in Y
 		lsr							; chose high nibble
 		lsr
@@ -914,12 +881,13 @@ PETAnimation:
 		sty screen+line* 18
 		jmp TestH1
 
+*= $ff99
 pet1:	!byte $ea, $ec, $61, $ec, $7e, $fb	; PET-graphics
 pet2:	!byte $7e, $ec, $7e, $ec, $7e, $e1
 pet3:	!byte $20, $7e, $20, $e2, $7e, $7c
-
 		!byte $20
 
+*= $ffac
 title 	!scr "pet *2001test* v1.1   test h7-rom in h6!"
 title2	!scr "chksum8+ 6540-       6550 (c) vossi 2020"
 
