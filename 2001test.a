@@ -1,10 +1,11 @@
 ; *************************************************************************************************
-;               2001test Version 1.1 / PET-2001 RAM/ROM-Test / Vossi 01/2020
+;               2001test Version 1.2 / PET-2001 RAM/ROM/IEEE488-Test / Vossi 02/2020
 ; *************************************************************************************************
 ; Insert to PET2001 (no crtc) in $f800 socket
 ;
 ;V1.0 initial version
 ;V1.1 checksums now with carry
+;V1.2 ieee4888 dataport-test
 
 !cpu 6502
 !to "2001test.bin", plain
@@ -58,23 +59,7 @@
 		stx screen+line*  7
 		stx screen+line*  8
 		inx							; 'i'
-		stx screen+line*  3 + 21
-		stx screen+line*  4 + 21
-		stx screen+line*  5 + 21
-		stx screen+line*  6 + 21
-		stx screen+line*  7 + 21
-		stx screen+line*  8 + 21
-		stx screen+line*  9 + 21
-		stx screen+line* 10 + 21
-		inx							; 'j'
-		stx screen+line*  3 + 26
-		stx screen+line*  4 + 26
-		stx screen+line*  5 + 26
-		stx screen+line*  6 + 26
-		stx screen+line*  7 + 26
-		stx screen+line*  8 + 26
-		stx screen+line*  9 + 26
-		stx screen+line* 10 + 26
+		stx screen+line* 10
 		lda #'$'
 		sta screen+line*  3 +  4
 		sta screen+line*  4 +  4
@@ -82,46 +67,33 @@
 		sta screen+line*  6 +  4
 		sta screen+line*  7 +  4
 		sta screen+line*  8 +  4
-		lda #'/'
-		sta screen+line*  3 + 24
-		sta screen+line*  4 + 24
-		sta screen+line*  5 + 24
-		sta screen+line*  6 + 24
-		sta screen+line*  7 + 24
-		sta screen+line*  8 + 24
-		sta screen+line*  9 + 24
-		sta screen+line* 10 + 24
 		ldx #'1'
 		stx screen+line*  3 +  1
-		stx screen+line*  3 + 22
-		stx screen+line*  3 + 27
+		stx screen+line*  3 + 24
 		inx							;'2'
 		stx screen+line*  4 +  1
-		stx screen+line*  4 + 22
-		stx screen+line*  4 + 27
+		stx screen+line*  4 + 24
 		inx							;'3'
 		stx screen+line*  5 +  1
-		stx screen+line*  5 + 22
-		stx screen+line*  5 + 27
+		stx screen+line*  5 + 24
 		inx							;'4'
 		stx screen+line*  6 +  1
-		stx screen+line*  6 + 22
-		stx screen+line*  6 + 27
+		stx screen+line*  6 + 24
 		inx							;'5'
 		stx screen+line*  7 +  1
-		stx screen+line*  7 + 22
-		stx screen+line*  7 + 27
+		stx screen+line*  7 + 24
 		inx							;'6'
 		stx screen+line*  8 +  1
-		stx screen+line*  8 + 22
-		stx screen+line*  8 + 27
+		stx screen+line*  8 + 24
 		inx							;'7'
-		stx screen+line*  9 + 22
-		stx screen+line*  9 + 27
+		stx screen+line*  9 + 24
 		inx							;'8'
-		stx screen+line* 10 + 22
-		stx screen+line* 10 + 27
+		stx screen+line* 10 + 24
 		stx $e813					; stop tape drive motor
+		lda #'e'
+		sta screen+line* 10 +  1
+		sta screen+line* 10 +  2
+		sta screen+line* 10 +  3
 		ldx #$06
 -		lda pet1,x					; print PET graphics
 		sta screen+line* 15 + 39,x
@@ -144,7 +116,7 @@ TestH1:
 		adc rom_h1+$700,x
 		inx
 		bne -
-		adc#$00
+		adc #$00						; add last possibly carry
 		tay							; remember checksum in Y
 		lsr							; chose high nibble
 		lsr
@@ -152,21 +124,19 @@ TestH1:
 		lsr
 		cmp #$0a					; test > 9
 		bcs +						; jump to a-f calculation
-		adc #$30					; calculate petscii code for 0-9
-		sta screen+line*  3 +  5 ; *********** löschen
+		adc #$30					; calculate screencode for 0-9 (c already clear from cmp)
 		bne ++
-+		sbc #$09					; calculate petscii code for a-f
-		sta screen+line*  3 +  5 ; *********** label ++ hier statt vor tya
-++		tya							; restore checksume from Y
++		sbc #$09					; calculate screencode for a-f (c already set from cmp)
+++		sta screen+line*  3 +  5
+		tya							; restore checksume from Y
 		and #$0f					; isolate low nibble
 		cmp #$0a
 		bcs +
 		adc #$30
-		sta screen+line*  3 +  6
 		bne ++
 +		sbc #$09
-		sta screen+line*  3 +  6
-++		tya							; restore checksum from Y
+++		sta screen+line*  3 +  6
+		tya							; restore checksum from Y
 		cmp #checksum_11			; compare if 011
 		bne not_11					; jump, if not equal
 		lda #'1'
@@ -221,7 +191,7 @@ TestH2:
 		adc rom_h2+$700,x
 		inx
 		bne -
-		adc#$00
+		adc #$00
 		tay							; save checksum in Y
 		lsr							; chose high nibble
 		lsr
@@ -229,20 +199,18 @@ TestH2:
 		lsr
 		cmp #$0a					; test > 9
 		bcs +						; jump to a-f calculation
-		adc #$30					; calculate petscii code for 0-9
-		sta screen+line*  4 +  5 ; *********** löschen
+		adc #$30					; calculate screencode for 0-9 (c already clear from cmp)
 		bne ++
-+		sbc #$09					; calculate petscii code for a-f
-		sta screen+line*  4 +  5 ; *********** label ++ hier statt vor tya
-++		tya							; restore checksume from Y
++		sbc #$09					; calculate screencode for a-f (c already set from cmp)
+++		sta screen+line*  4 +  5
+		tya							; restore checksume from Y
 		and #$0f					; isolate low nibble
 		cmp #$0a
 		bcs +
 		adc #$30
-		sta screen+line*  4 +  6
 		bne ++
 +		sbc #$09
-		sta screen+line*  4 +  6
+++		sta screen+line*  4 +  6
 ++		tya							; restore checksum from Y
 		cmp #checksum_13			; compare if 013
 		bne not_13					; jump, if not equal
@@ -293,7 +261,7 @@ TestH3:
 		adc rom_h3+$700,x
 		inx
 		bne -
-		adc#$00
+		adc #$00
 		tay							; save checksum in Y
 		lsr							; chose high nibble
 		lsr
@@ -301,20 +269,18 @@ TestH3:
 		lsr
 		cmp #$0a					; test > 9
 		bcs +						; jump to a-f calculation
-		adc #$30					; calculate petscii code for 0-9
-		sta screen+line*  5 +  5 ; *********** löschen
+		adc #$30					; calculate screencode for 0-9 (c already clear from cmp)
 		bne ++
-+		sbc #$09					; calculate petscii code for a-f
-		sta screen+line*  5 +  5 ; *********** label ++ hier statt vor tya
-++		tya							; restore checksume from Y
++		sbc #$09					; calculate screencode for a-f (c already set from cmp)
+++		sta screen+line*  5 +  5
+		tya							; restore checksume from Y
 		and #$0f					; isolate low nibble
 		cmp #$0a
 		bcs +
 		adc #$30
-		sta screen+line*  5 +  6
 		bne ++
 +		sbc #$09
-		sta screen+line*  5 +  6
+++		sta screen+line*  5 +  6
 ++		tya							; restore checksum from Y
 		cmp #checksum_15			; compare if 015
 		bne not_15					; jump, if not equal
@@ -365,7 +331,7 @@ TestH4:
 		adc rom_h4+$700,x
 		inx
 		bne -
-		adc#$00
+		adc #$00
 		tay							; save checksum in Y
 		lsr							; chose high nibble
 		lsr
@@ -373,20 +339,18 @@ TestH4:
 		lsr
 		cmp #$0a					; test > 9
 		bcs +						; jump to a-f calculation
-		adc #$30					; calculate petscii code for 0-9
-		sta screen+line*  6 +  5 ; *********** löschen
+		adc #$30					; calculate screencode for 0-9 (c already clear from cmp)
 		bne ++
-+		sbc #$09					; calculate petscii code for a-f
-		sta screen+line*  6 +  5 ; *********** label ++ hier statt vor tya
-++		tya							; restore checksume from Y
++		sbc #$09					; calculate screencode for a-f (c already set from cmp)
+++		sta screen+line*  6 +  5
+		tya							; restore checksume from Y
 		and #$0f					; isolate low nibble
 		cmp #$0a
 		bcs +
 		adc #$30
-		sta screen+line*  6 +  6
 		bne ++
 +		sbc #$09
-		sta screen+line*  6 +  6
+++		sta screen+line*  6 +  6
 ++		tya							; restore checksum from Y
 		cmp #checksum_16			; compare if 016
 		bne not_16					; jump, if not equal
@@ -437,7 +401,7 @@ TestH5:
 		adc rom_h5+$700,x
 		inx
 		bne -
-		adc#$00
+		adc #$00
 		tay							; save checksum in Y
 		lsr							; chose high nibble
 		lsr
@@ -445,20 +409,18 @@ TestH5:
 		lsr
 		cmp #$0a					; test > 9
 		bcs +						; jump to a-f calculation
-		adc #$30					; calculate petscii code for 0-9
-		sta screen+line*  7 +  5 ; *********** löschen
+		adc #$30					; calculate screencode for 0-9 (c already clear from cmp)
 		bne ++
-+		sbc #$09					; calculate petscii code for a-f
-		sta screen+line*  7 +  5 ; *********** label ++ hier statt vor tya
-++		tya							; restore checksume from Y
++		sbc #$09					; calculate screencode for a-f (c already set from cmp)
+++		sta screen+line*  7 +  5
+		tya							; restore checksume from Y
 		and #$0f					; isolate low nibble
 		cmp #$0a
 		bcs +
 		adc #$30
-		sta screen+line*  7 +  6
 		bne ++
 +		sbc #$09
-		sta screen+line*  7 +  6
+++		sta screen+line*  7 +  6
 ++		tya							; restore checksum from Y
 		cmp #checksum_12			; compare if 012
 		bne not_12					; jump, if not equal
@@ -509,7 +471,7 @@ TestH6:
 		adc rom_h6+$700,x
 		inx
 		bne -
-		adc#$00
+		adc #$00
 		tay							; save checksum in Y
 		lsr							; chose high nibble
 		lsr
@@ -517,20 +479,18 @@ TestH6:
 		lsr
 		cmp #$0a					; test > 9
 		bcs +						; jump to a-f calculation
-		adc #$30					; calculate petscii code for 0-9
-		sta screen+line*  8 +  5 ; *********** löschen
+		adc #$30					; calculate screencode for 0-9 (c already clear from cmp)
 		bne ++
-+		sbc #$09					; calculate petscii code for a-f
-		sta screen+line*  8 +  5 ; *********** label ++ hier statt vor tya
-++		tya							; restore checksume from Y
++		sbc #$09					; calculate screencode for a-f (c already set from cmp)
+++		sta screen+line*  8 +  5
+		tya							; restore checksume from Y
 		and #$0f					; isolate low nibble
 		cmp #$0a
 		bcs +
 		adc #$30
-		sta screen+line*  8 +  6
 		bne ++
 +		sbc #$09
-		sta screen+line*  8 +  6
+++		sta screen+line*  8 +  6
 ++		tya							; restore checksum from Y
 		cmp #checksum_14			; compare if 014
 		bne not_14					; jump, if not equal
@@ -597,21 +557,21 @@ RamTest0000:
 		inx
 		bne --
 		lda #'o'
-		sta screen+line*  3 + 30
+		sta screen+line*  3 + 27
 		lda #'k'
-		sta screen+line*  3 + 31
-		lda screen+line*  3 + 32
+		sta screen+line*  3 + 28
+		lda screen+line*  3 + 29
 		cmp #'d'
 		bne RamTest0400
 		lda #'?'
-		sta screen+line*  3 + 32
+		sta screen+line*  3 + 29
 		bne RamTest0400
 i1_bad:	ldx #'b'
-		stx screen+line*  3 + 30
+		stx screen+line*  3 + 27
 		dex							; 'a'
-		stx screen+line*  3 + 31
+		stx screen+line*  3 + 28
 		lda #'d'
-		sta screen+line*  3 + 32
+		sta screen+line*  3 + 29
 RamTest0400:
 		ldx #$00
 --		lda #$55
@@ -632,21 +592,21 @@ RamTest0400:
 		inx
 		bne --
 		lda #'o'
-		sta screen+line*  4 + 30
+		sta screen+line*  4 + 27
 		lda #'k'
-		sta screen+line*  4 + 31
-		lda screen+line*  4 + 32
+		sta screen+line*  4 + 28
+		lda screen+line*  4 + 29
 		cmp #'d'
 		bne RamTest0800
 		lda #'?'
-		sta screen+line*  4 + 32
+		sta screen+line*  4 + 29
 		bne RamTest0800
 i2_bad:	ldx #'b'
-		stx screen+line*  4 + 30
+		stx screen+line*  4 + 27
 		dex							; 'a'
-		stx screen+line*  4 + 31
+		stx screen+line*  4 + 28
 		lda #'d'
-		sta screen+line*  4 + 32
+		sta screen+line*  4 + 29
 RamTest0800:
 		ldx #$00
 --		lda #$55
@@ -667,21 +627,21 @@ RamTest0800:
 		inx
 		bne --
 		lda #'o'
-		sta screen+line*  5 + 30
+		sta screen+line*  5 + 27
 		lda #'k'
-		sta screen+line*  5 + 31
-		lda screen+line*  5 + 32
+		sta screen+line*  5 + 28
+		lda screen+line*  5 + 29
 		cmp #'d'
 		bne RamTest0c00
 		lda #'?'
-		sta screen+line*  5 + 32
+		sta screen+line*  5 + 29
 		bne RamTest0c00
 i3_bad:	ldx #'b'
-		stx screen+line*  5 + 30
+		stx screen+line*  5 + 27
 		dex							; 'a'
-		stx screen+line*  5 + 31
+		stx screen+line*  5 + 28
 		lda #'d'
-		sta screen+line*  5 + 32
+		sta screen+line*  5 + 29
 RamTest0c00:
 		ldx #$00
 --		lda #$55
@@ -702,21 +662,21 @@ RamTest0c00:
 		inx
 		bne --
 		lda #'o'
-		sta screen+line*  6 + 30
+		sta screen+line*  6 + 27
 		lda #'k'
-		sta screen+line*  6 + 31
-		lda screen+line*  6 + 32
+		sta screen+line*  6 + 28
+		lda screen+line*  6 + 29
 		cmp #'d'
 		bne RamTest1000
 		lda #'?'
-		sta screen+line*  6 + 32
+		sta screen+line*  6 + 29
 		bne RamTest1000
 i4_bad:	ldx #'b'
-		stx screen+line*  6 + 30
+		stx screen+line*  6 + 27
 		dex							; 'a'
-		stx screen+line*  6 + 31
+		stx screen+line*  6 + 28
 		lda #'d'
-		sta screen+line*  6 + 32
+		sta screen+line*  6 + 29
 RamTest1000:
 		ldx #$00
 --		lda #$55
@@ -737,21 +697,21 @@ RamTest1000:
 		inx
 		bne --
 		lda #'o'
-		sta screen+line*  7 + 30
+		sta screen+line*  7 + 27
 		lda #'k'
-		sta screen+line*  7 + 31
-		lda screen+line*  7 + 32
+		sta screen+line*  7 + 28
+		lda screen+line*  7 + 29
 		cmp #'d'
 		bne RamTest1400
 		lda #'?'
-		sta screen+line*  7 + 32
+		sta screen+line*  7 + 29
 		bne RamTest1400
 i5_bad:	ldx #'b'
-		stx screen+line*  7 + 30
+		stx screen+line*  7 + 27
 		dex							; 'a'
-		stx screen+line*  7 + 31
+		stx screen+line*  7 + 28
 		lda #'d'
-		sta screen+line*  7 + 32
+		sta screen+line*  7 + 29
 RamTest1400:
 		ldx #$00
 --		lda #$55
@@ -772,21 +732,21 @@ RamTest1400:
 		inx
 		bne --
 		lda #'o'
-		sta screen+line*  8 + 30
+		sta screen+line*  8 + 27
 		lda #'k'
-		sta screen+line*  8 + 31
-		lda screen+line*  8 + 32
+		sta screen+line*  8 + 28
+		lda screen+line*  8 + 29
 		cmp #'d'
 		bne RamTest1800
 		lda #'?'
-		sta screen+line*  8 + 32
+		sta screen+line*  8 + 29
 		bne RamTest1800
 i6_bad:	ldx #'b'
-		stx screen+line*  8 + 30
+		stx screen+line*  8 + 27
 		dex							; 'a'
-		stx screen+line*  8 + 31
+		stx screen+line*  8 + 28
 		lda #'d'
-		sta screen+line*  8 + 32
+		sta screen+line*  8 + 29
 RamTest1800:
 		ldx #$00
 --		lda #$55
@@ -807,21 +767,21 @@ RamTest1800:
 		inx
 		bne --
 		lda #'o'
-		sta screen+line*  9 + 30
+		sta screen+line*  9 + 27
 		lda #'k'
-		sta screen+line*  9 + 31
-		lda screen+line*  9 + 32
+		sta screen+line*  9 + 28
+		lda screen+line*  9 + 29
 		cmp #'d'
 		bne RamTest1c00
 		lda #'?'
-		sta screen+line*  9 + 32
+		sta screen+line*  9 + 29
 		bne RamTest1c00
 i7_bad:	ldx #'b'
-		stx screen+line*  9 + 30
+		stx screen+line*  9 + 27
 		dex							; 'a'
-		stx screen+line*  9 + 31
+		stx screen+line*  9 + 28
 		lda #'d'
-		sta screen+line*  9 + 32
+		sta screen+line*  9 + 29
 RamTest1c00:
 		ldx #$00
 --		lda #$55
@@ -842,21 +802,53 @@ RamTest1c00:
 		inx
 		bne --
 		lda #'o'
-		sta screen+line* 10 + 30
+		sta screen+line* 10 + 27
 		lda #'k'
-		sta screen+line* 10 + 31
-		lda screen+line* 10 + 32
+		sta screen+line* 10 + 28
+		lda screen+line* 10 + 29
 		cmp #'d'
-		bne PETAnimation
+		bne IEEETest
 		lda #'?'
-		sta screen+line* 10 + 32
+		sta screen+line* 10 + 29
 		bne PETAnimation
 i8_bad:	ldx #'b'
-		stx screen+line* 10 + 30
+		stx screen+line* 10 + 27
 		dex							; 'a'
-		stx screen+line* 10 + 31
+		stx screen+line* 10 + 28
 		lda #'d'
-		sta screen+line* 10 + 32
+		sta screen+line* 10 + 29
+IEEETest:
+		lda#$f2
+		sta$e821
+		sta$e823
+		ldx#$ff
+		stx$e822
+		inx
+		stx$e820
+		lda#$f6
+		sta$e823
+		sta$e821
+		stx$e822
+		lda$e820
+		cmp #$00
+		bne ie_bad
+		dex
+		stx$e822
+		lda$e820
+		cmp #$ff
+		bne ie_bad
+		lda #'o'
+		sta screen+line* 10 + 14
+		lda #'k'
+		sta screen+line* 10 + 15
+		bne +
+ie_bad: ldx #'b'
+		stx screen+line* 10 + 14
+		dex							; 'a'
+		stx screen+line* 10 + 15
+		lda #'d'
+		sta screen+line* 10 + 16
++
 PETAnimation:
 		ldy screen+line* 16 + 39
 		ldx #39
@@ -888,8 +880,8 @@ pet3:	!byte $20, $7e, $20, $e2, $7e, $7c
 		!byte $20
 
 *= $ffac
-title 	!scr "pet *2001test* v1.1   test h7-rom in h6!"
-title2	!scr "chksum8+ 6540-       6550 (c) vossi 2020"
+title 	!scr "pet *2001test* v1.2   test h7-rom in h6!"
+title2	!scr "chksum8+ 6540-   6550 i/j (c) vossi 2020"
 
 vectors:
 		!byte $00, $f8, $00, $f8

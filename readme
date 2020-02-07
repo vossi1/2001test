@@ -1,12 +1,14 @@
 2001test.a
 
-PET2001 RAM/ROM-TEST (no CRTC) (c) by Vossi 10/2016
+PET2001 RAM/ROM-TEST (no CRTC) (c) by Vossi 2/2020
 Insert to PET2001 in $f800 socket
 
 Introducing V1.0: http://lc64.blogspot.com/2016/10/pet-2001test-for-65406550.html
 YouTube V1.0: https://www.youtube.com/watch?v=AUs9_OV-ziM&feature=youtu.be
 
-Version 1.0
+V1.0 Initial Version
+V1.1 rom-checksums with carry
+V1.2 ieee488 dataport test
 
 I had some trouble with the 6540-ROMs in my PETs and built an special adapter to read them in my EPROM-burner.
 But it's not possible to read them in my TL866, Merlin/Promenade C1 and the Tiny Eprommer :(
