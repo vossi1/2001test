@@ -818,37 +818,52 @@ i8_bad:	ldx #'b'
 		lda #'d'
 		sta screen+line* 10 + 29
 IEEETest:
-		lda#$f2
-		sta$e821
-		sta$e823
-		ldx#$ff
-		stx$e822
+		lda #$1e
+		sta $e842
+		lda #$f2
+		sta $e821
+		sta $e823
+		ldx #$ff
+		stx $e822
 		inx
-		stx$e820
-		lda#$f6
-		sta$e823
-		sta$e821
-		stx$e822
-		lda$e820
+		stx $e820
+		stx $e840
+		lda #$f6
+		sta $e823
+		sta $e821
+		stx $e822
+		lda $e820
 		cmp #$00
 		bne ie_bad
 		dex
-		stx$e822
-		lda$e820
+		stx $e822
+		lda $e820
 		cmp #$ff
 		bne ie_bad
+		lda $e840
+		and #$c1
+		bne ie_bad	
+		lda #$06
+		sta $e840
+		lda #$fe
+		sta $e821
+		sta $e823
+		lda $e840
+		and #$c1
+		cmp #$c1
+		bne ie_bad	
+
 		lda #'o'
 		sta screen+line* 10 + 14
 		lda #'k'
 		sta screen+line* 10 + 15
-		bne +
+		bne PETAnimation
 ie_bad: ldx #'b'
 		stx screen+line* 10 + 14
 		dex							; 'a'
 		stx screen+line* 10 + 15
 		lda #'d'
 		sta screen+line* 10 + 16
-+
 PETAnimation:
 		ldy screen+line* 16 + 39
 		ldx #39
