@@ -810,7 +810,7 @@ RamTest1c00:
 		bne IEEETest
 		lda #'?'
 		sta screen+line* 10 + 29
-		bne PETAnimation
+		bne IEEETest
 i8_bad:	ldx #'b'
 		stx screen+line* 10 + 27
 		dex							; 'a'
@@ -820,7 +820,7 @@ i8_bad:	ldx #'b'
 IEEETest:
 		lda #$1e
 		sta $e842
-		lda #$f2
+		lda #$32
 		sta $e821
 		sta $e823
 		ldx #$ff
@@ -828,7 +828,7 @@ IEEETest:
 		inx
 		stx $e820
 		stx $e840
-		lda #$f6
+		lda #$36
 		sta $e823
 		sta $e821
 		stx $e822
@@ -843,16 +843,19 @@ IEEETest:
 		lda $e840
 		and #$c1
 		bne ie_bad	
+		lda $e821
+		bmi ie_bad
 		lda #$06
 		sta $e840
-		lda #$fe
+		lda #$3e
 		sta $e821
 		sta $e823
 		lda $e840
 		and #$c1
 		cmp #$c1
 		bne ie_bad	
-
+		lda $e821
+;		bpl ie_bad					; ATN check doenst work!
 		lda #'o'
 		sta screen+line* 10 + 14
 		lda #'k'

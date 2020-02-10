@@ -9,6 +9,7 @@ YouTube V1.0: https://www.youtube.com/watch?v=AUs9_OV-ziM&feature=youtu.be
 V1.0 Initial Version
 V1.1 rom-checksums with carry
 V1.2 ieee488 dataport test
+V1.3 ieee488 test without atn
 
 I had some trouble with the 6540-ROMs in my PETs and built an special adapter to read them in my EPROM-burner.
 But it's not possible to read them in my TL866, Merlin/Promenade C1 and the Tiny Eprommer :(
