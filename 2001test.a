@@ -1,11 +1,12 @@
 ; *************************************************************************************************
-;               2001test Version 1.2 / PET-2001 RAM/ROM/IEEE488-Test / Vossi 02/2020
+;               2001test PET-2001 RAM/ROM/IEEE488-Test / (c) Vossi 02/2020
 ; *************************************************************************************************
 ; Insert to PET2001 (no crtc) in $f800 socket
 ;
 ;V1.0 initial version
 ;V1.1 checksums now with carry
-;V1.2 ieee4888 dataport-test
+;V1.2 ieee488 dataport-test
+;V1.3 ieee488 check without ATN (doesnt work), SRQ / EOI (not possible without dongle)
 
 !cpu 6502
 !to "2001test.bin", plain
@@ -818,44 +819,59 @@ i8_bad:	ldx #'b'
 		lda #'d'
 		sta screen+line* 10 + 29
 IEEETest:
-		lda #$1e
-		sta $e842
-		lda #$32
-		sta $e821
-		sta $e823
+		lda #$1e						; bit #0 = 0 NDAC 		in
+										; bit #1 = 1 NRFD 		out
+										; bit #2 = 1 ATN 		out
+										; bit #6 = 0 NRFD		in
+										; bit #7 = 0 DAV		in
+		sta $e842					; set VIA DDR port B to standard
+		lda #$32						; bit #0 = 0 Cx1 IRQ flag disabled
+										; bit #1 = 1 Cx1 active high
+										; bit #2 = 0 port control DDR
+										; bit #3 = 0 Cx2 low
+										; bit #4 = 1 Cx2 manual
+										; bit #5 = 1 Cx2 direction out
+										; bit #7 = 1 Cx1 active trans 0->1
+		sta $e821					; set PIA2 control A
+										; CA1 = ATN in
+										; CA2 = NDAC out
+		sta $e823					; set PIA2 control B
+										; CB2 = DAV out
+		lda $e821					; clear IRQ flag CA1
 		ldx #$ff
-		stx $e822
-		inx
-		stx $e820
-		stx $e840
-		lda #$36
-		sta $e823
-		sta $e821
-		stx $e822
-		lda $e820
-		cmp #$00
-		bne ie_bad
-		dex
-		stx $e822
-		lda $e820
-		cmp #$ff
-		bne ie_bad
-		lda $e840
-		and #$c1
-		bne ie_bad	
-		lda $e821
-		bmi ie_bad
-		lda #$06
-		sta $e840
-		lda #$3e
-		sta $e821
-		sta $e823
-		lda $e840
-		and #$c1
-		cmp #$c1
-		bne ie_bad	
-		lda $e821
-;		bpl ie_bad					; ATN check doenst work!
+		stx $e822					; set PIA2 DDR port B output 
+		inx							; x = $00
+		stx $e820					; set PIA2 DDR port A input
+		stx $e840					; set VIA Port B ATN + NRFD = 0
+		lda #$32 + 4					; bit #2 = 1 port control I/O
+		sta $e823					; set PIA2 control B
+		sta $e821					; set PIA2 control A
+		stx $e822					; set PIA2 port B data lines = 0
+		lda $e820					; load PIA2 port A data lines
+		bne ie_bad					; if not 0: IEEE data lines bad !
+		dex							; X = $ff
+		stx $e822					; set PIA2 port A data lines = 1
+		lda $e820				
+		cmp #$ff					; check if data lines = 1 ?
+		bne ie_bad					; if not 1: IEEE data lines bad !
+		lda $e840					; load VIA port B
+		and #$c1					; isolate NDAC, NRFD, DAV
+		bne ie_bad					; if NDAC, NRFD, DAV not 0: IEEE bad !
+		lda $e821					; load PIA2 control A
+		bmi ie_bad					; if bit #7 = 1: ATN bad !
+		lda #$06						; bit #1 = NRFD
+										; bit #2 = ATN
+		sta $e840					; set VIA port B NRFD + ATN = 1
+		lda $e821					; load PIA2 control A
+; ***** ATN check flag = 1 doesnt work! - I dont know why - I tested everything (in Vice) ... *****
+;		bpl ie_bad					; if bit #7 CA1 flag not 1; ATN bad !
+		lda #$32 + 4 + 8				; bit #3 = Cx2
+		sta $e821					; set PIA2 port A CA2 NDAC = 1
+		sta $e823					; set PIA2 port B CB2 DAV = 1
+		lda $e840					; load VIA port B
+		and #$c1					; isolate NDAC, NRFD, DAV
+		cmp #$c1					; check if 1 ?
+		bne ie_bad					; if not1: IEEE bad !
 		lda #'o'
 		sta screen+line* 10 + 14
 		lda #'k'
@@ -898,7 +914,7 @@ pet3:	!byte $20, $7e, $20, $e2, $7e, $7c
 		!byte $20
 
 *= $ffac
-title 	!scr "pet *2001test* v1.2   test h7-rom in h6!"
+title 	!scr "pet *2001test* v1.3   test h7-rom in h6!"
 title2	!scr "chksum8+ 6540-   6550 i/j (c) vossi 2020"
 
 vectors:
