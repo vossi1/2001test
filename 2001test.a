@@ -876,6 +876,11 @@ IEEETest:
 		sta screen+line* 10 + 14
 		lda #'k'
 		sta screen+line* 10 + 15
+		lda screen+line* 10 + 16
+		cmp #'d'
+		bne PETAnimation
+		lda #'?'
+		sta screen+line* 10 + 16
 		bne PETAnimation
 ie_bad: ldx #'b'
 		stx screen+line* 10 + 14
