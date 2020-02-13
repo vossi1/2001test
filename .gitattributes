@@ -1,0 +1,3 @@
+*.b linguist-language=Assembly
+*.a linguist-language=Assembly
+releases/* linguist-detectable=false
