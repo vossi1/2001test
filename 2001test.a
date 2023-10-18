@@ -13,7 +13,7 @@
 !ct scr
 
 !addr 	screen		=	$8000		; screen memory base
-		line		=	40			; line length
+	line		=	40		; line length
 !addr	rom_h1		=	$c000		; rom base addresses
 !addr	rom_h2		=	$d000
 !addr	rom_h3		=	$e000
@@ -21,906 +21,906 @@
 !addr	rom_h5		=	$c800
 !addr	rom_h6		=	$d800
 !addr	rom_h7		=	$f800
-		checksum_11 =	$4b			; rom checksums with carry
-		checksum_12 =	$e6
-		checksum_13 =	$32
-		checksum_14 =	$6b
-		checksum_15 =	$60
-		checksum_16 =	$12
-		checksum_18 =	$a6
-		checksum_19 =	$b6
-		checksum_20 =	$ed
-		checksum_21 =	$89
-		checksum_22 =	$9c
-		checksum_23 =	$25
-		checksum_24 =	$c0
-		checksum_25 =	$89
-		checksum_26 =	$93
+	checksum_11 =	$4b			; rom checksums with carry
+	checksum_12 =	$e6
+	checksum_13 =	$32
+	checksum_14 =	$6b
+	checksum_15 =	$60
+	checksum_16 =	$12
+	checksum_18 =	$a6
+	checksum_19 =	$b6
+	checksum_20 =	$ed
+	checksum_21 =	$89
+	checksum_22 =	$9c
+	checksum_23 =	$25
+	checksum_24 =	$c0
+	checksum_25 =	$89
+	checksum_26 =	$93
 
 *= $f800
-		sei
-		lda #' '					; clear screen memory
-		ldx #$00
--		sta screen,x
-		sta screen+$100,x
-		sta screen+$200,x
-		sta screen+$300,x
-		inx
-		bne -
--		lda title,x					; print title
-		beq +
-		sta screen,x
-		inx
-		bne -
-+		ldx #'h'					; print table
-		stx screen+line*  3
-		stx screen+line*  4
-		stx screen+line*  5
-		stx screen+line*  6
-		stx screen+line*  7
-		stx screen+line*  8
-		inx							; 'i'
-		stx screen+line* 10
-		lda #'$'
-		sta screen+line*  3 +  4
-		sta screen+line*  4 +  4
-		sta screen+line*  5 +  4
-		sta screen+line*  6 +  4
-		sta screen+line*  7 +  4
-		sta screen+line*  8 +  4
-		ldx #'1'
-		stx screen+line*  3 +  1
-		stx screen+line*  3 + 24
-		inx							;'2'
-		stx screen+line*  4 +  1
-		stx screen+line*  4 + 24
-		inx							;'3'
-		stx screen+line*  5 +  1
-		stx screen+line*  5 + 24
-		inx							;'4'
-		stx screen+line*  6 +  1
-		stx screen+line*  6 + 24
-		inx							;'5'
-		stx screen+line*  7 +  1
-		stx screen+line*  7 + 24
-		inx							;'6'
-		stx screen+line*  8 +  1
-		stx screen+line*  8 + 24
-		inx							;'7'
-		stx screen+line*  9 + 24
-		inx							;'8'
-		stx screen+line* 10 + 24
-		stx $e813					; stop tape drive motor
-		lda #'e'
-		sta screen+line* 10 +  1
-		sta screen+line* 10 +  2
-		sta screen+line* 10 +  3
-		ldx #$06
--		lda pet1,x					; print PET graphics
-		sta screen+line* 15 + 39,x
-		lda pet2,x
-		sta screen+line* 16 + 39,x
-		lda pet3,x
-		sta screen+line* 17 + 39,x
-		dex
-		bne -
+	sei
+	lda #' '					; clear screen memory
+	ldx #$00
+-	sta screen,x
+	sta screen+$100,x
+	sta screen+$200,x
+	sta screen+$300,x
+	inx
+	bne -
+-	lda title,x					; print title
+	beq +
+	sta screen,x
+	inx
+	bne -
++	ldx #'h'					; print table
+	stx screen+line*  3
+	stx screen+line*  4
+	stx screen+line*  5
+	stx screen+line*  6
+	stx screen+line*  7
+	stx screen+line*  8
+	inx							; 'i'
+	stx screen+line* 10
+	lda #'$'
+	sta screen+line*  3 +  4
+	sta screen+line*  4 +  4
+	sta screen+line*  5 +  4
+	sta screen+line*  6 +  4
+	sta screen+line*  7 +  4
+	sta screen+line*  8 +  4
+	ldx #'1'
+	stx screen+line*  3 +  1
+	stx screen+line*  3 + 24
+	inx							;'2'
+	stx screen+line*  4 +  1
+	stx screen+line*  4 + 24
+	inx							;'3'
+	stx screen+line*  5 +  1
+	stx screen+line*  5 + 24
+	inx							;'4'
+	stx screen+line*  6 +  1
+	stx screen+line*  6 + 24
+	inx							;'5'
+	stx screen+line*  7 +  1
+	stx screen+line*  7 + 24
+	inx							;'6'
+	stx screen+line*  8 +  1
+	stx screen+line*  8 + 24
+	inx							;'7'
+	stx screen+line*  9 + 24
+	inx							;'8'
+	stx screen+line* 10 + 24
+	stx $e813					; stop tape drive motor
+	lda #'e'
+	sta screen+line* 10 +  1
+	sta screen+line* 10 +  2
+	sta screen+line* 10 +  3
+	ldx #$06
+-	lda pet1,x					; print PET graphics
+	sta screen+line* 15 + 39,x
+	lda pet2,x
+	sta screen+line* 16 + 39,x
+	lda pet3,x
+	sta screen+line* 17 + 39,x
+	dex
+	bne -
 TestH1:
-		txa							; clear A
-		clc							; clear carry for calculation
--		adc rom_h1,x				; calculate checksum of rom h1
-		adc rom_h1+$100,x
-		adc rom_h1+$200,x
-		adc rom_h1+$300,x
-		adc rom_h1+$400,x
-		adc rom_h1+$500,x
-		adc rom_h1+$600,x
-		adc rom_h1+$700,x
-		inx
-		bne -
-		adc #$00						; add last possibly carry
-		tay							; remember checksum in Y
-		lsr							; chose high nibble
-		lsr
-		lsr
-		lsr
-		cmp #$0a					; test > 9
-		bcs +						; jump to a-f calculation
-		adc #$30					; calculate screencode for 0-9 (c already clear from cmp)
-		bne ++
-+		sbc #$09					; calculate screencode for a-f (c already set from cmp)
-++		sta screen+line*  3 +  5
-		tya							; restore checksume from Y
-		and #$0f					; isolate low nibble
-		cmp #$0a
-		bcs +
-		adc #$30
-		bne ++
-+		sbc #$09
-++		sta screen+line*  3 +  6
-		tya							; restore checksum from Y
-		cmp #checksum_11			; compare if 011
-		bne not_11					; jump, if not equal
-		lda #'1'
-		sta screen+line*  3 + 11
+	txa							; clear A
+	clc							; clear carry for calculation
+-	adc rom_h1,x				; calculate checksum of rom h1
+	adc rom_h1+$100,x
+	adc rom_h1+$200,x
+	adc rom_h1+$300,x
+	adc rom_h1+$400,x
+	adc rom_h1+$500,x
+	adc rom_h1+$600,x
+	adc rom_h1+$700,x
+	inx
+	bne -
+	adc #$00						; add last possibly carry
+	tay							; remember checksum in Y
+	lsr							; chose high nibble
+	lsr
+	lsr
+	lsr
+	cmp #$0a					; test > 9
+	bcs +						; jump to a-f calculation
+	adc #$30					; calculate screencode for 0-9 (c already clear from cmp)
+	bne ++
++	sbc #$09					; calculate screencode for a-f (c already set from cmp)
+++	sta screen+line*  3 +  5
+	tya							; restore checksume from Y
+	and #$0f					; isolate low nibble
+	cmp #$0a
+	bcs +
+	adc #$30
+	bne ++
++	sbc #$09
+++	sta screen+line*  3 +  6
+	tya							; restore checksum from Y
+	cmp #checksum_11			; compare if 011
+	bne not_11					; jump, if not equal
+	lda #'1'
+	sta screen+line*  3 + 11
 h1_x1x:	lda #'1'
-		sta screen+line*  3 + 10
+	sta screen+line*  3 + 10
 h1_0xx:	lda #'0'
-		sta screen+line*  3 +  9
-		lda #'o'
-		sta screen+line*  3 + 14
-		lda #'k'
-		sta screen+line*  3 + 15
-		bne TestH2					; jump to next rom test
+	sta screen+line*  3 +  9
+	lda #'o'
+	sta screen+line*  3 + 14
+	lda #'k'
+	sta screen+line*  3 + 15
+	bne TestH2					; jump to next rom test
 not_11:	cmp #checksum_19			; compare if 019
-		bne not_19
-		lda #'9'
-		sta screen+line*  3 + 11
-		bne h1_x1x:
+	bne not_19
+	lda #'9'
+	sta screen+line*  3 + 11
+	bne h1_x1x:
 not_19:	cmp #checksum_20			; compare if 020
-		bne not_20
-		lda #'0'
-		sta screen+line*  3 + 11
-		lda #'2'
-		sta screen+line*  3 + 10
-		bne h1_0xx
+	bne not_20
+	lda #'0'
+	sta screen+line*  3 + 11
+	lda #'2'
+	sta screen+line*  3 + 10
+	bne h1_0xx
 not_20:	cmp #$00					; compare if empty
-		bne h1_bad
-		lda #'e'
-		sta screen+line*  3 +  9
-		lda #'m'
-		sta screen+line*  3 + 10
-		lda #'p'
-		sta screen+line*  3 + 11
-		lda #'t'
-		sta screen+line*  3 + 12
-		lda #'y'
-		sta screen+line*  3 + 13
-		bne TestH2
+	bne h1_bad
+	lda #'e'
+	sta screen+line*  3 +  9
+	lda #'m'
+	sta screen+line*  3 + 10
+	lda #'p'
+	sta screen+line*  3 + 11
+	lda #'t'
+	sta screen+line*  3 + 12
+	lda #'y'
+	sta screen+line*  3 + 13
+	bne TestH2
 h1_bad:	lda #'?'					; bad or unknown rom
-		sta screen+line*  3 +  9
+	sta screen+line*  3 +  9
 TestH2:
-		lda #$00
-		tax
-		clc							; clear carry for calculation
--		adc rom_h2,x				; calculate checksum of rom h2
-		adc rom_h2+$100,x
-		adc rom_h2+$200,x
-		adc rom_h2+$300,x
-		adc rom_h2+$400,x
-		adc rom_h2+$500,x
-		adc rom_h2+$600,x
-		adc rom_h2+$700,x
-		inx
-		bne -
-		adc #$00
-		tay							; save checksum in Y
-		lsr							; chose high nibble
-		lsr
-		lsr
-		lsr
-		cmp #$0a					; test > 9
-		bcs +						; jump to a-f calculation
-		adc #$30					; calculate screencode for 0-9 (c already clear from cmp)
-		bne ++
-+		sbc #$09					; calculate screencode for a-f (c already set from cmp)
-++		sta screen+line*  4 +  5
-		tya							; restore checksume from Y
-		and #$0f					; isolate low nibble
-		cmp #$0a
-		bcs +
-		adc #$30
-		bne ++
-+		sbc #$09
-++		sta screen+line*  4 +  6
-++		tya							; restore checksum from Y
-		cmp #checksum_13			; compare if 013
-		bne not_13					; jump, if not equal
-		lda #'3'
-		sta screen+line*  4 + 11
-		lda #'1'
-		sta screen+line*  4 + 10
+	lda #$00
+	tax
+	clc							; clear carry for calculation
+-	adc rom_h2,x				; calculate checksum of rom h2
+	adc rom_h2+$100,x
+	adc rom_h2+$200,x
+	adc rom_h2+$300,x
+	adc rom_h2+$400,x
+	adc rom_h2+$500,x
+	adc rom_h2+$600,x
+	adc rom_h2+$700,x
+	inx
+	bne -
+	adc #$00
+	tay							; save checksum in Y
+	lsr							; chose high nibble
+	lsr
+	lsr
+	lsr
+	cmp #$0a					; test > 9
+	bcs +						; jump to a-f calculation
+	adc #$30					; calculate screencode for 0-9 (c already clear from cmp)
+	bne ++
++	sbc #$09					; calculate screencode for a-f (c already set from cmp)
+++	sta screen+line*  4 +  5
+	tya							; restore checksume from Y
+	and #$0f					; isolate low nibble
+	cmp #$0a
+	bcs +
+	adc #$30
+	bne ++
++	sbc #$09
+++	sta screen+line*  4 +  6
+++	tya							; restore checksum from Y
+	cmp #checksum_13			; compare if 013
+	bne not_13					; jump, if not equal
+	lda #'3'
+	sta screen+line*  4 + 11
+	lda #'1'
+	sta screen+line*  4 + 10
 h2_0xx:	lda #'0'
-		sta screen+line*  4 +  9
-		lda #'o'
-		sta screen+line*  4 + 14
-		lda #'k'
-		sta screen+line*  4 + 15
-		bne TestH3					; jump to next rom test
+	sta screen+line*  4 +  9
+	lda #'o'
+	sta screen+line*  4 + 14
+	lda #'k'
+	sta screen+line*  4 + 15
+	bne TestH3					; jump to next rom test
 not_13:	cmp #checksum_22			; compare if 022
-		bne not_22
-		lda #'2'
-		sta screen+line*  4 + 11
-		lda #'2'
-		sta screen+line*  4 + 10
-		bne h2_0xx
+	bne not_22
+	lda #'2'
+	sta screen+line*  4 + 11
+	lda #'2'
+	sta screen+line*  4 + 10
+	bne h2_0xx
 not_22:	cmp #$00					; compare if empty
-		bne h2_bad
-		lda #'e'
-		sta screen+line*  4 +  9
-		lda #'m'
-		sta screen+line*  4 + 10
-		lda #'p'
-		sta screen+line*  4 + 11
-		lda #'t'
-		sta screen+line*  4 + 12
-		lda #'y'
-		sta screen+line*  4 + 13
-		bne TestH3
+	bne h2_bad
+	lda #'e'
+	sta screen+line*  4 +  9
+	lda #'m'
+	sta screen+line*  4 + 10
+	lda #'p'
+	sta screen+line*  4 + 11
+	lda #'t'
+	sta screen+line*  4 + 12
+	lda #'y'
+	sta screen+line*  4 + 13
+	bne TestH3
 h2_bad:	lda #'?'					; bad or unknown rom
-		sta screen+line*  4 +  9
+	sta screen+line*  4 +  9
 TestH3:
-		lda #$00
-		tax
-		clc							; clear carry for calculation
--		adc rom_h3,x				; calculate checksum of rom h3
-		adc rom_h3+$100,x
-		adc rom_h3+$200,x
-		adc rom_h3+$300,x
-		adc rom_h3+$400,x
-		adc rom_h3+$500,x
-		adc rom_h3+$600,x
-		adc rom_h3+$700,x
-		inx
-		bne -
-		adc #$00
-		tay							; save checksum in Y
-		lsr							; chose high nibble
-		lsr
-		lsr
-		lsr
-		cmp #$0a					; test > 9
-		bcs +						; jump to a-f calculation
-		adc #$30					; calculate screencode for 0-9 (c already clear from cmp)
-		bne ++
-+		sbc #$09					; calculate screencode for a-f (c already set from cmp)
-++		sta screen+line*  5 +  5
-		tya							; restore checksume from Y
-		and #$0f					; isolate low nibble
-		cmp #$0a
-		bcs +
-		adc #$30
-		bne ++
-+		sbc #$09
-++		sta screen+line*  5 +  6
-++		tya							; restore checksum from Y
-		cmp #checksum_15			; compare if 015
-		bne not_15					; jump, if not equal
-		lda #'5'
-		sta screen+line*  5 + 11
-		lda #'1'
-		sta screen+line*  5 + 10
+	lda #$00
+	tax
+	clc							; clear carry for calculation
+-	adc rom_h3,x				; calculate checksum of rom h3
+	adc rom_h3+$100,x
+	adc rom_h3+$200,x
+	adc rom_h3+$300,x
+	adc rom_h3+$400,x
+	adc rom_h3+$500,x
+	adc rom_h3+$600,x
+	adc rom_h3+$700,x
+	inx
+	bne -
+	adc #$00
+	tay							; save checksum in Y
+	lsr							; chose high nibble
+	lsr
+	lsr
+	lsr
+	cmp #$0a					; test > 9
+	bcs +						; jump to a-f calculation
+	adc #$30					; calculate screencode for 0-9 (c already clear from cmp)
+	bne ++
++	sbc #$09					; calculate screencode for a-f (c already set from cmp)
+++	sta screen+line*  5 +  5
+	tya							; restore checksume from Y
+	and #$0f					; isolate low nibble
+	cmp #$0a
+	bcs +
+	adc #$30
+	bne ++
++	sbc #$09
+++	sta screen+line*  5 +  6
+++	tya							; restore checksum from Y
+	cmp #checksum_15			; compare if 015
+	bne not_15					; jump, if not equal
+	lda #'5'
+	sta screen+line*  5 + 11
+	lda #'1'
+	sta screen+line*  5 + 10
 h3_0xx:	lda #'0'
-		sta screen+line*  5 +  9
-		lda #'o'
-		sta screen+line*  5 + 14
-		lda #'k'
-		sta screen+line*  5 + 15
-		bne TestH4					; jump to next rom test
+	sta screen+line*  5 +  9
+	lda #'o'
+	sta screen+line*  5 + 14
+	lda #'k'
+	sta screen+line*  5 + 15
+	bne TestH4					; jump to next rom test
 not_15:	cmp #checksum_24			; compare if 024
-		bne not_24
-		lda #'4'
-		sta screen+line*  5 + 11
-		lda #'2'
-		sta screen+line*  5 + 10
-		bne h3_0xx
+	bne not_24
+	lda #'4'
+	sta screen+line*  5 + 11
+	lda #'2'
+	sta screen+line*  5 + 10
+	bne h3_0xx
 not_24:	cmp #$00					; compare if empty
-		bne h3_bad
-		lda #'e'
-		sta screen+line*  5 +  9
-		lda #'m'
-		sta screen+line*  5 + 10
-		lda #'p'
-		sta screen+line*  5 + 11
-		lda #'t'
-		sta screen+line*  5 + 12
-		lda #'y'
-		sta screen+line*  5 + 13
-		bne TestH4
+	bne h3_bad
+	lda #'e'
+	sta screen+line*  5 +  9
+	lda #'m'
+	sta screen+line*  5 + 10
+	lda #'p'
+	sta screen+line*  5 + 11
+	lda #'t'
+	sta screen+line*  5 + 12
+	lda #'y'
+	sta screen+line*  5 + 13
+	bne TestH4
 h3_bad:	lda #'?'					; bad or unknown rom
-		sta screen+line*  5 +  9
+	sta screen+line*  5 +  9
 TestH4:
-		lda #$00
-		tax
-		clc							; clear carry for calculation
--		adc rom_h4,x				; calculate checksum of rom h4
-		adc rom_h4+$100,x
-		adc rom_h4+$200,x
-		adc rom_h4+$300,x
-		adc rom_h4+$400,x
-		adc rom_h4+$500,x
-		adc rom_h4+$600,x
-		adc rom_h4+$700,x
-		inx
-		bne -
-		adc #$00
-		tay							; save checksum in Y
-		lsr							; chose high nibble
-		lsr
-		lsr
-		lsr
-		cmp #$0a					; test > 9
-		bcs +						; jump to a-f calculation
-		adc #$30					; calculate screencode for 0-9 (c already clear from cmp)
-		bne ++
-+		sbc #$09					; calculate screencode for a-f (c already set from cmp)
-++		sta screen+line*  6 +  5
-		tya							; restore checksume from Y
-		and #$0f					; isolate low nibble
-		cmp #$0a
-		bcs +
-		adc #$30
-		bne ++
-+		sbc #$09
-++		sta screen+line*  6 +  6
-++		tya							; restore checksum from Y
-		cmp #checksum_16			; compare if 016
-		bne not_16					; jump, if not equal
-		lda #'6'
-		sta screen+line*  6 + 11
-		lda #'1'
-		sta screen+line*  6 + 10
+	lda #$00
+	tax
+	clc							; clear carry for calculation
+-	adc rom_h4,x				; calculate checksum of rom h4
+	adc rom_h4+$100,x
+	adc rom_h4+$200,x
+	adc rom_h4+$300,x
+	adc rom_h4+$400,x
+	adc rom_h4+$500,x
+	adc rom_h4+$600,x
+	adc rom_h4+$700,x
+	inx
+	bne -
+	adc #$00
+	tay							; save checksum in Y
+	lsr							; chose high nibble
+	lsr
+	lsr
+	lsr
+	cmp #$0a					; test > 9
+	bcs +						; jump to a-f calculation
+	adc #$30					; calculate screencode for 0-9 (c already clear from cmp)
+	bne ++
++	sbc #$09					; calculate screencode for a-f (c already set from cmp)
+++	sta screen+line*  6 +  5
+	tya							; restore checksume from Y
+	and #$0f					; isolate low nibble
+	cmp #$0a
+	bcs +
+	adc #$30
+	bne ++
++	sbc #$09
+++	sta screen+line*  6 +  6
+++	tya							; restore checksum from Y
+	cmp #checksum_16			; compare if 016
+	bne not_16					; jump, if not equal
+	lda #'6'
+	sta screen+line*  6 + 11
+	lda #'1'
+	sta screen+line*  6 + 10
 h4_0xx:	lda #'0'
-		sta screen+line*  6 +  9
-		lda #'o'
-		sta screen+line*  6 + 14
-		lda #'k'
-		sta screen+line*  6 + 15
-		bne TestH5					; jump to next rom test
+	sta screen+line*  6 +  9
+	lda #'o'
+	sta screen+line*  6 + 14
+	lda #'k'
+	sta screen+line*  6 + 15
+	bne TestH5					; jump to next rom test
 not_16:	cmp #checksum_25			; compare if 025
-		bne not_25
-		lda #'5'
-		sta screen+line*  6 + 11
-		lda #'2'
-		sta screen+line*  6 + 10
-		bne h4_0xx
+	bne not_25
+	lda #'5'
+	sta screen+line*  6 + 11
+	lda #'2'
+	sta screen+line*  6 + 10
+	bne h4_0xx
 not_25:	cmp #$00					; compare if empty
-		bne h4_bad
-		lda #'e'
-		sta screen+line*  6 +  9
-		lda #'m'
-		sta screen+line*  6 + 10
-		lda #'p'
-		sta screen+line*  6 + 11
-		lda #'t'
-		sta screen+line*  6 + 12
-		lda #'y'
-		sta screen+line*  6 + 13
-		bne TestH5
+	bne h4_bad
+	lda #'e'
+	sta screen+line*  6 +  9
+	lda #'m'
+	sta screen+line*  6 + 10
+	lda #'p'
+	sta screen+line*  6 + 11
+	lda #'t'
+	sta screen+line*  6 + 12
+	lda #'y'
+	sta screen+line*  6 + 13
+	bne TestH5
 h4_bad:	lda #'?'					; bad or unknown rom
-		sta screen+line*  6 +  9
+	sta screen+line*  6 +  9
 TestH5:
-		lda #$00
-		tax
-		clc							; clear carry for calculation
--		adc rom_h5,x				; calculate checksum of rom h5
-		adc rom_h5+$100,x
-		adc rom_h5+$200,x
-		adc rom_h5+$300,x
-		adc rom_h5+$400,x
-		adc rom_h5+$500,x
-		adc rom_h5+$600,x
-		adc rom_h5+$700,x
-		inx
-		bne -
-		adc #$00
-		tay							; save checksum in Y
-		lsr							; chose high nibble
-		lsr
-		lsr
-		lsr
-		cmp #$0a					; test > 9
-		bcs +						; jump to a-f calculation
-		adc #$30					; calculate screencode for 0-9 (c already clear from cmp)
-		bne ++
-+		sbc #$09					; calculate screencode for a-f (c already set from cmp)
-++		sta screen+line*  7 +  5
-		tya							; restore checksume from Y
-		and #$0f					; isolate low nibble
-		cmp #$0a
-		bcs +
-		adc #$30
-		bne ++
-+		sbc #$09
-++		sta screen+line*  7 +  6
-++		tya							; restore checksum from Y
-		cmp #checksum_12			; compare if 012
-		bne not_12					; jump, if not equal
-		lda #'2'
-		sta screen+line*  7 + 11
-		lda #'1'
-		sta screen+line*  7 + 10
+	lda #$00
+	tax
+	clc							; clear carry for calculation
+-	adc rom_h5,x				; calculate checksum of rom h5
+	adc rom_h5+$100,x
+	adc rom_h5+$200,x
+	adc rom_h5+$300,x
+	adc rom_h5+$400,x
+	adc rom_h5+$500,x
+	adc rom_h5+$600,x
+	adc rom_h5+$700,x
+	inx
+	bne -
+	adc #$00
+	tay							; save checksum in Y
+	lsr							; chose high nibble
+	lsr
+	lsr
+	lsr
+	cmp #$0a					; test > 9
+	bcs +						; jump to a-f calculation
+	adc #$30					; calculate screencode for 0-9 (c already clear from cmp)
+	bne ++
++	sbc #$09					; calculate screencode for a-f (c already set from cmp)
+++	sta screen+line*  7 +  5
+	tya							; restore checksume from Y
+	and #$0f					; isolate low nibble
+	cmp #$0a
+	bcs +
+	adc #$30
+	bne ++
++	sbc #$09
+++	sta screen+line*  7 +  6
+++	tya							; restore checksum from Y
+	cmp #checksum_12			; compare if 012
+	bne not_12					; jump, if not equal
+	lda #'2'
+	sta screen+line*  7 + 11
+	lda #'1'
+	sta screen+line*  7 + 10
 h5_0xx:	lda #'0'
-		sta screen+line*  7 +  9
-		lda #'o'
-		sta screen+line*  7 + 14
-		lda #'k'
-		sta screen+line*  7 + 15
-		bne TestH6					; jump to next rom test
+	sta screen+line*  7 +  9
+	lda #'o'
+	sta screen+line*  7 + 14
+	lda #'k'
+	sta screen+line*  7 + 15
+	bne TestH6					; jump to next rom test
 not_12:	cmp #checksum_21			; compare if 021
-		bne not_21
-		lda #'1'
-		sta screen+line*  7 + 11
-		lda #'2'
-		sta screen+line*  7 + 10
-		bne h5_0xx
+	bne not_21
+	lda #'1'
+	sta screen+line*  7 + 11
+	lda #'2'
+	sta screen+line*  7 + 10
+	bne h5_0xx
 not_21:	cmp #$00					; compare if empty
-		bne h5_bad
-		lda #'e'
-		sta screen+line*  7 +  9
-		lda #'m'
-		sta screen+line*  7 + 10
-		lda #'p'
-		sta screen+line*  7 + 11
-		lda #'t'
-		sta screen+line*  7 + 12
-		lda #'y'
-		sta screen+line*  7 + 13
-		bne TestH6
+	bne h5_bad
+	lda #'e'
+	sta screen+line*  7 +  9
+	lda #'m'
+	sta screen+line*  7 + 10
+	lda #'p'
+	sta screen+line*  7 + 11
+	lda #'t'
+	sta screen+line*  7 + 12
+	lda #'y'
+	sta screen+line*  7 + 13
+	bne TestH6
 h5_bad:	lda #'?'					; bad or unknown rom
-		sta screen+line*  7 +  9
+	sta screen+line*  7 +  9
 TestH6:
-		lda #$00
-		tax
-		clc							; clear carry for calculation
--		adc rom_h6,x				; calculate checksum of rom h6
-		adc rom_h6+$100,x
-		adc rom_h6+$200,x
-		adc rom_h6+$300,x
-		adc rom_h6+$400,x
-		adc rom_h6+$500,x
-		adc rom_h6+$600,x
-		adc rom_h6+$700,x
-		inx
-		bne -
-		adc #$00
-		tay							; save checksum in Y
-		lsr							; chose high nibble
-		lsr
-		lsr
-		lsr
-		cmp #$0a					; test > 9
-		bcs +						; jump to a-f calculation
-		adc #$30					; calculate screencode for 0-9 (c already clear from cmp)
-		bne ++
-+		sbc #$09					; calculate screencode for a-f (c already set from cmp)
-++		sta screen+line*  8 +  5
-		tya							; restore checksume from Y
-		and #$0f					; isolate low nibble
-		cmp #$0a
-		bcs +
-		adc #$30
-		bne ++
-+		sbc #$09
-++		sta screen+line*  8 +  6
-++		tya							; restore checksum from Y
-		cmp #checksum_14			; compare if 014
-		bne not_14					; jump, if not equal
-		lda #'4'
-		sta screen+line*  8 + 11
+	lda #$00
+	tax
+	clc							; clear carry for calculation
+-	adc rom_h6,x				; calculate checksum of rom h6
+	adc rom_h6+$100,x
+	adc rom_h6+$200,x
+	adc rom_h6+$300,x
+	adc rom_h6+$400,x
+	adc rom_h6+$500,x
+	adc rom_h6+$600,x
+	adc rom_h6+$700,x
+	inx
+	bne -
+	adc #$00
+	tay							; save checksum in Y
+	lsr							; chose high nibble
+	lsr
+	lsr
+	lsr
+	cmp #$0a					; test > 9
+	bcs +						; jump to a-f calculation
+	adc #$30					; calculate screencode for 0-9 (c already clear from cmp)
+	bne ++
++	sbc #$09					; calculate screencode for a-f (c already set from cmp)
+++	sta screen+line*  8 +  5
+	tya							; restore checksume from Y
+	and #$0f					; isolate low nibble
+	cmp #$0a
+	bcs +
+	adc #$30
+	bne ++
++	sbc #$09
+++	sta screen+line*  8 +  6
+++	tya							; restore checksum from Y
+	cmp #checksum_14			; compare if 014
+	bne not_14					; jump, if not equal
+	lda #'4'
+	sta screen+line*  8 + 11
 h6_01x:	lda #'1'
-		sta screen+line*  8 + 10
+	sta screen+line*  8 + 10
 h6_0xx:	lda #'0'
-		sta screen+line*  8 +  9
-		lda #'o'
-		sta screen+line*  8 + 14
-		lda #'k'
-		sta screen+line*  8 + 15
-		bne RamTest0000				; jump to ram-test
+	sta screen+line*  8 +  9
+	lda #'o'
+	sta screen+line*  8 + 14
+	lda #'k'
+	sta screen+line*  8 + 15
+	bne RamTest0000				; jump to ram-test
 not_14:	cmp #checksum_23			; compare if 023
-		bne not_23
-		lda #'3'
-		sta screen+line*  8 + 11
+	bne not_23
+	lda #'3'
+	sta screen+line*  8 + 11
 h6_02x:	lda #'2'
-		sta screen+line*  8 + 10
-		bne h6_0xx:
+	sta screen+line*  8 + 10
+	bne h6_0xx:
 not_23:	cmp #checksum_18			; compare if 018
-		bne not_18
-		lda #'8'
-		sta screen+line*  8 + 11
-		bne h6_01x
+	bne not_18
+	lda #'8'
+	sta screen+line*  8 + 11
+	bne h6_01x
 not_18:	cmp #checksum_26			; compare if 026
-		bne not_26
-		lda #'6'
-		sta screen+line*  8 + 11
-		bne h6_02x
+	bne not_26
+	lda #'6'
+	sta screen+line*  8 + 11
+	bne h6_02x
 not_26:	cmp #$00					; compare if empty
-		bne h6_bad
-		lda #'e'
-		sta screen+line*  8 +  9
-		lda #'m'
-		sta screen+line*  8 + 10
-		lda #'p'
-		sta screen+line*  8 + 11
-		lda #'t'
-		sta screen+line*  8 + 12
-		lda #'y'
-		sta screen+line*  8 + 13
-		bne RamTest0000
+	bne h6_bad
+	lda #'e'
+	sta screen+line*  8 +  9
+	lda #'m'
+	sta screen+line*  8 + 10
+	lda #'p'
+	sta screen+line*  8 + 11
+	lda #'t'
+	sta screen+line*  8 + 12
+	lda #'y'
+	sta screen+line*  8 + 13
+	bne RamTest0000
 h6_bad:	lda #'?'					; bad or unknown rom
-		sta screen+line*  8 +  9
+	sta screen+line*  8 +  9
 RamTest0000:
-		ldx #$00
---		lda #$55
--		sta $0000,x
-		sta $0100,x
-		sta $0200,x
-		sta $0300,x
-		cmp $0000,x
-		bne i1_bad
-		cmp $0100,x
-		bne i1_bad
-		cmp $0200,x
-		bne i1_bad
-		cmp $0300,x
-		bne i1_bad
-		rol
-		bcc -
-		inx
-		bne --
-		lda #'o'
-		sta screen+line*  3 + 27
-		lda #'k'
-		sta screen+line*  3 + 28
-		lda screen+line*  3 + 29
-		cmp #'d'
-		bne RamTest0400
-		lda #'?'
-		sta screen+line*  3 + 29
-		bne RamTest0400
+	ldx #$00
+--	lda #$55
+-	sta $0000,x
+	sta $0100,x
+	sta $0200,x
+	sta $0300,x
+	cmp $0000,x
+	bne i1_bad
+	cmp $0100,x
+	bne i1_bad
+	cmp $0200,x
+	bne i1_bad
+	cmp $0300,x
+	bne i1_bad
+	rol
+	bcc -
+	inx
+	bne --
+	lda #'o'
+	sta screen+line*  3 + 27
+	lda #'k'
+	sta screen+line*  3 + 28
+	lda screen+line*  3 + 29
+	cmp #'d'
+	bne RamTest0400
+	lda #'?'
+	sta screen+line*  3 + 29
+	bne RamTest0400
 i1_bad:	ldx #'b'
-		stx screen+line*  3 + 27
-		dex							; 'a'
-		stx screen+line*  3 + 28
-		lda #'d'
-		sta screen+line*  3 + 29
+	stx screen+line*  3 + 27
+	dex							; 'a'
+	stx screen+line*  3 + 28
+	lda #'d'
+	sta screen+line*  3 + 29
 RamTest0400:
-		ldx #$00
---		lda #$55
--		sta $0400,x
-		sta $0500,x
-		sta $0600,x
-		sta $0700,x
-		cmp $0400,x
-		bne i2_bad
-		cmp $0500,x
-		bne i2_bad
-		cmp $0600,x
-		bne i2_bad
-		cmp $0700,x
-		bne i2_bad
-		rol
-		bcc -
-		inx
-		bne --
-		lda #'o'
-		sta screen+line*  4 + 27
-		lda #'k'
-		sta screen+line*  4 + 28
-		lda screen+line*  4 + 29
-		cmp #'d'
-		bne RamTest0800
-		lda #'?'
-		sta screen+line*  4 + 29
-		bne RamTest0800
+	ldx #$00
+--	lda #$55
+-	sta $0400,x
+	sta $0500,x
+	sta $0600,x
+	sta $0700,x
+	cmp $0400,x
+	bne i2_bad
+	cmp $0500,x
+	bne i2_bad
+	cmp $0600,x
+	bne i2_bad
+	cmp $0700,x
+	bne i2_bad
+	rol
+	bcc -
+	inx
+	bne --
+	lda #'o'
+	sta screen+line*  4 + 27
+	lda #'k'
+	sta screen+line*  4 + 28
+	lda screen+line*  4 + 29
+	cmp #'d'
+	bne RamTest0800
+	lda #'?'
+	sta screen+line*  4 + 29
+	bne RamTest0800
 i2_bad:	ldx #'b'
-		stx screen+line*  4 + 27
-		dex							; 'a'
-		stx screen+line*  4 + 28
-		lda #'d'
-		sta screen+line*  4 + 29
+	stx screen+line*  4 + 27
+	dex							; 'a'
+	stx screen+line*  4 + 28
+	lda #'d'
+	sta screen+line*  4 + 29
 RamTest0800:
-		ldx #$00
---		lda #$55
--		sta $0800,x
-		sta $0900,x
-		sta $0a00,x
-		sta $0b00,x
-		cmp $0800,x
-		bne i3_bad
-		cmp $0900,x
-		bne i3_bad
-		cmp $0a00,x
-		bne i3_bad
-		cmp $0b00,x
-		bne i3_bad
-		rol
-		bcc -
-		inx
-		bne --
-		lda #'o'
-		sta screen+line*  5 + 27
-		lda #'k'
-		sta screen+line*  5 + 28
-		lda screen+line*  5 + 29
-		cmp #'d'
-		bne RamTest0c00
-		lda #'?'
-		sta screen+line*  5 + 29
-		bne RamTest0c00
+	ldx #$00
+--	lda #$55
+-	sta $0800,x
+	sta $0900,x
+	sta $0a00,x
+	sta $0b00,x
+	cmp $0800,x
+	bne i3_bad
+	cmp $0900,x
+	bne i3_bad
+	cmp $0a00,x
+	bne i3_bad
+	cmp $0b00,x
+	bne i3_bad
+	rol
+	bcc -
+	inx
+	bne --
+	lda #'o'
+	sta screen+line*  5 + 27
+	lda #'k'
+	sta screen+line*  5 + 28
+	lda screen+line*  5 + 29
+	cmp #'d'
+	bne RamTest0c00
+	lda #'?'
+	sta screen+line*  5 + 29
+	bne RamTest0c00
 i3_bad:	ldx #'b'
-		stx screen+line*  5 + 27
-		dex							; 'a'
-		stx screen+line*  5 + 28
-		lda #'d'
-		sta screen+line*  5 + 29
+	stx screen+line*  5 + 27
+	dex							; 'a'
+	stx screen+line*  5 + 28
+	lda #'d'
+	sta screen+line*  5 + 29
 RamTest0c00:
-		ldx #$00
---		lda #$55
--		sta $0c00,x
-		sta $0d00,x
-		sta $0e00,x
-		sta $0f00,x
-		cmp $0c00,x
-		bne i4_bad
-		cmp $0d00,x
-		bne i4_bad
-		cmp $0e00,x
-		bne i4_bad
-		cmp $0f00,x
-		bne i4_bad
-		rol
-		bcc -
-		inx
-		bne --
-		lda #'o'
-		sta screen+line*  6 + 27
-		lda #'k'
-		sta screen+line*  6 + 28
-		lda screen+line*  6 + 29
-		cmp #'d'
-		bne RamTest1000
-		lda #'?'
-		sta screen+line*  6 + 29
-		bne RamTest1000
+	ldx #$00
+--	lda #$55
+-	sta $0c00,x
+	sta $0d00,x
+	sta $0e00,x
+	sta $0f00,x
+	cmp $0c00,x
+	bne i4_bad
+	cmp $0d00,x
+	bne i4_bad
+	cmp $0e00,x
+	bne i4_bad
+	cmp $0f00,x
+	bne i4_bad
+	rol
+	bcc -
+	inx
+	bne --
+	lda #'o'
+	sta screen+line*  6 + 27
+	lda #'k'
+	sta screen+line*  6 + 28
+	lda screen+line*  6 + 29
+	cmp #'d'
+	bne RamTest1000
+	lda #'?'
+	sta screen+line*  6 + 29
+	bne RamTest1000
 i4_bad:	ldx #'b'
-		stx screen+line*  6 + 27
-		dex							; 'a'
-		stx screen+line*  6 + 28
-		lda #'d'
-		sta screen+line*  6 + 29
+	stx screen+line*  6 + 27
+	dex							; 'a'
+	stx screen+line*  6 + 28
+	lda #'d'
+	sta screen+line*  6 + 29
 RamTest1000:
-		ldx #$00
---		lda #$55
--		sta $1000,x
-		sta $1100,x
-		sta $1200,x
-		sta $1300,x
-		cmp $1000,x
-		bne i5_bad
-		cmp $1100,x
-		bne i5_bad
-		cmp $1200,x
-		bne i5_bad
-		cmp $1300,x
-		bne i5_bad
-		rol
-		bcc -
-		inx
-		bne --
-		lda #'o'
-		sta screen+line*  7 + 27
-		lda #'k'
-		sta screen+line*  7 + 28
-		lda screen+line*  7 + 29
-		cmp #'d'
-		bne RamTest1400
-		lda #'?'
-		sta screen+line*  7 + 29
-		bne RamTest1400
+	ldx #$00
+--	lda #$55
+-	sta $1000,x
+	sta $1100,x
+	sta $1200,x
+	sta $1300,x
+	cmp $1000,x
+	bne i5_bad
+	cmp $1100,x
+	bne i5_bad
+	cmp $1200,x
+	bne i5_bad
+	cmp $1300,x
+	bne i5_bad
+	rol
+	bcc -
+	inx
+	bne --
+	lda #'o'
+	sta screen+line*  7 + 27
+	lda #'k'
+	sta screen+line*  7 + 28
+	lda screen+line*  7 + 29
+	cmp #'d'
+	bne RamTest1400
+	lda #'?'
+	sta screen+line*  7 + 29
+	bne RamTest1400
 i5_bad:	ldx #'b'
-		stx screen+line*  7 + 27
-		dex							; 'a'
-		stx screen+line*  7 + 28
-		lda #'d'
-		sta screen+line*  7 + 29
+	stx screen+line*  7 + 27
+	dex							; 'a'
+	stx screen+line*  7 + 28
+	lda #'d'
+	sta screen+line*  7 + 29
 RamTest1400:
-		ldx #$00
---		lda #$55
--		sta $1400,x
-		sta $1500,x
-		sta $1600,x
-		sta $1700,x
-		cmp $1400,x
-		bne i6_bad
-		cmp $1500,x
-		bne i6_bad
-		cmp $1600,x
-		bne i6_bad
-		cmp $1700,x
-		bne i6_bad
-		rol
-		bcc -
-		inx
-		bne --
-		lda #'o'
-		sta screen+line*  8 + 27
-		lda #'k'
-		sta screen+line*  8 + 28
-		lda screen+line*  8 + 29
-		cmp #'d'
-		bne RamTest1800
-		lda #'?'
-		sta screen+line*  8 + 29
-		bne RamTest1800
+	ldx #$00
+--	lda #$55
+-	sta $1400,x
+	sta $1500,x
+	sta $1600,x
+	sta $1700,x
+	cmp $1400,x
+	bne i6_bad
+	cmp $1500,x
+	bne i6_bad
+	cmp $1600,x
+	bne i6_bad
+	cmp $1700,x
+	bne i6_bad
+	rol
+	bcc -
+	inx
+	bne --
+	lda #'o'
+	sta screen+line*  8 + 27
+	lda #'k'
+	sta screen+line*  8 + 28
+	lda screen+line*  8 + 29
+	cmp #'d'
+	bne RamTest1800
+	lda #'?'
+	sta screen+line*  8 + 29
+	bne RamTest1800
 i6_bad:	ldx #'b'
-		stx screen+line*  8 + 27
-		dex							; 'a'
-		stx screen+line*  8 + 28
-		lda #'d'
-		sta screen+line*  8 + 29
+	stx screen+line*  8 + 27
+	dex							; 'a'
+	stx screen+line*  8 + 28
+	lda #'d'
+	sta screen+line*  8 + 29
 RamTest1800:
-		ldx #$00
---		lda #$55
--		sta $1800,x
-		sta $1900,x
-		sta $1a00,x
-		sta $1b00,x
-		cmp $1800,x
-		bne i7_bad
-		cmp $1900,x
-		bne i7_bad
-		cmp $1a00,x
-		bne i7_bad
-		cmp $1b00,x
-		bne i7_bad
-		rol
-		bcc -
-		inx
-		bne --
-		lda #'o'
-		sta screen+line*  9 + 27
-		lda #'k'
-		sta screen+line*  9 + 28
-		lda screen+line*  9 + 29
-		cmp #'d'
-		bne RamTest1c00
-		lda #'?'
-		sta screen+line*  9 + 29
-		bne RamTest1c00
+	ldx #$00
+--	lda #$55
+-	sta $1800,x
+	sta $1900,x
+	sta $1a00,x
+	sta $1b00,x
+	cmp $1800,x
+	bne i7_bad
+	cmp $1900,x
+	bne i7_bad
+	cmp $1a00,x
+	bne i7_bad
+	cmp $1b00,x
+	bne i7_bad
+	rol
+	bcc -
+	inx
+	bne --
+	lda #'o'
+	sta screen+line*  9 + 27
+	lda #'k'
+	sta screen+line*  9 + 28
+	lda screen+line*  9 + 29
+	cmp #'d'
+	bne RamTest1c00
+	lda #'?'
+	sta screen+line*  9 + 29
+	bne RamTest1c00
 i7_bad:	ldx #'b'
-		stx screen+line*  9 + 27
-		dex							; 'a'
-		stx screen+line*  9 + 28
-		lda #'d'
-		sta screen+line*  9 + 29
+	stx screen+line*  9 + 27
+	dex							; 'a'
+	stx screen+line*  9 + 28
+	lda #'d'
+	sta screen+line*  9 + 29
 RamTest1c00:
-		ldx #$00
---		lda #$55
--		sta $1c00,x
-		sta $1d00,x
-		sta $1e00,x
-		sta $1f00,x
-		cmp $1c00,x
-		bne i8_bad
-		cmp $1d00,x
-		bne i8_bad
-		cmp $1e00,x
-		bne i8_bad
-		cmp $1f00,x
-		bne i8_bad
-		rol
-		bcc -
-		inx
-		bne --
-		lda #'o'
-		sta screen+line* 10 + 27
-		lda #'k'
-		sta screen+line* 10 + 28
-		lda screen+line* 10 + 29
-		cmp #'d'
-		bne IEEETest
-		lda #'?'
-		sta screen+line* 10 + 29
-		bne IEEETest
+	ldx #$00
+--	lda #$55
+-	sta $1c00,x
+	sta $1d00,x
+	sta $1e00,x
+	sta $1f00,x
+	cmp $1c00,x
+	bne i8_bad
+	cmp $1d00,x
+	bne i8_bad
+	cmp $1e00,x
+	bne i8_bad
+	cmp $1f00,x
+	bne i8_bad
+	rol
+	bcc -
+	inx
+	bne --
+	lda #'o'
+	sta screen+line* 10 + 27
+	lda #'k'
+	sta screen+line* 10 + 28
+	lda screen+line* 10 + 29
+	cmp #'d'
+	bne IEEETest
+	lda #'?'
+	sta screen+line* 10 + 29
+	bne IEEETest
 i8_bad:	ldx #'b'
-		stx screen+line* 10 + 27
-		dex							; 'a'
-		stx screen+line* 10 + 28
-		lda #'d'
-		sta screen+line* 10 + 29
+	stx screen+line* 10 + 27
+	dex							; 'a'
+	stx screen+line* 10 + 28
+	lda #'d'
+	sta screen+line* 10 + 29
 IEEETest:
-		lda #$1e						; bit #0 = 0 NDAC 		in
-										; bit #1 = 1 NRFD 		out
-										; bit #2 = 1 ATN 		out
-										; bit #6 = 0 NRFD		in
-										; bit #7 = 0 DAV		in
-		sta $e842					; set VIA DDR port B to standard
-		lda #$32						; bit #0 = 0 Cx1 IRQ flag disabled
-										; bit #1 = 1 Cx1 active high
-										; bit #2 = 0 port control DDR
-										; bit #3 = 0 Cx2 low
-										; bit #4 = 1 Cx2 manual
-										; bit #5 = 1 Cx2 direction out
-										; bit #7 = 1 Cx1 active trans 0->1
-		sta $e821					; set PIA2 control A
-										; CA1 = ATN in
-										; CA2 = NDAC out
-		sta $e823					; set PIA2 control B
-										; CB2 = DAV out
-		lda $e821					; clear IRQ flag CA1
-		ldx #$ff
-		stx $e822					; set PIA2 DDR port B output 
-		inx							; x = $00
-		stx $e820					; set PIA2 DDR port A input
-		stx $e840					; set VIA Port B ATN + NRFD = 0
-		lda #$32 + 4					; bit #2 = 1 port control I/O
-		sta $e823					; set PIA2 control B
-		sta $e821					; set PIA2 control A
-		stx $e822					; set PIA2 port B data lines = 0
-		lda $e820					; load PIA2 port A data lines
-		bne ie_bad					; if not 0: IEEE data lines bad !
-		dex							; X = $ff
-		stx $e822					; set PIA2 port A data lines = 1
-		lda $e820				
-		cmp #$ff					; check if data lines = 1 ?
-		bne ie_bad					; if not 1: IEEE data lines bad !
-		lda $e840					; load VIA port B
-		and #$c1					; isolate NDAC, NRFD, DAV
-		bne ie_bad					; if NDAC, NRFD, DAV not 0: IEEE bad !
-		lda $e821					; load PIA2 control A
-		bmi ie_bad					; if bit #7 = 1: ATN bad !
-		lda #$06						; bit #1 = NRFD
-										; bit #2 = ATN
-		sta $e840					; set VIA port B NRFD + ATN = 1
-		lda $e821					; load PIA2 control A
+	lda #$1e						; bit #0 = 0 NDAC 		in
+									; bit #1 = 1 NRFD 		out
+									; bit #2 = 1 ATN 		out
+									; bit #6 = 0 NRFD		in
+									; bit #7 = 0 DAV		in
+	sta $e842					; set VIA DDR port B to standard
+	lda #$32						; bit #0 = 0 Cx1 IRQ flag disabled
+									; bit #1 = 1 Cx1 active high
+									; bit #2 = 0 port control DDR
+									; bit #3 = 0 Cx2 low
+									; bit #4 = 1 Cx2 manual
+									; bit #5 = 1 Cx2 direction out
+									; bit #7 = 1 Cx1 active trans 0->1
+	sta $e821					; set PIA2 control A
+									; CA1 = ATN in
+									; CA2 = NDAC out
+	sta $e823					; set PIA2 control B
+									; CB2 = DAV out
+	lda $e821					; clear IRQ flag CA1
+	ldx #$ff
+	stx $e822					; set PIA2 DDR port B output 
+	inx							; x = $00
+	stx $e820					; set PIA2 DDR port A input
+	stx $e840					; set VIA Port B ATN + NRFD = 0
+	lda #$32 + 4					; bit #2 = 1 port control I/O
+	sta $e823					; set PIA2 control B
+	sta $e821					; set PIA2 control A
+	stx $e822					; set PIA2 port B data lines = 0
+	lda $e820					; load PIA2 port A data lines
+	bne ie_bad					; if not 0: IEEE data lines bad !
+	dex							; X = $ff
+	stx $e822					; set PIA2 port A data lines = 1
+	lda $e820				
+	cmp #$ff					; check if data lines = 1 ?
+	bne ie_bad					; if not 1: IEEE data lines bad !
+	lda $e840					; load VIA port B
+	and #$c1					; isolate NDAC, NRFD, DAV
+	bne ie_bad					; if NDAC, NRFD, DAV not 0: IEEE bad !
+	lda $e821					; load PIA2 control A
+	bmi ie_bad					; if bit #7 = 1: ATN bad !
+	lda #$06						; bit #1 = NRFD
+									; bit #2 = ATN
+	sta $e840					; set VIA port B NRFD + ATN = 1
+	lda $e821					; load PIA2 control A
 ; ***** ATN check flag = 1 doesnt work! - I dont know why - I tested everything (in Vice) ... *****
-;		bpl ie_bad					; if bit #7 CA1 flag not 1; ATN bad !
-		lda #$32 + 4 + 8				; bit #3 = Cx2
-		sta $e821					; set PIA2 port A CA2 NDAC = 1
-		sta $e823					; set PIA2 port B CB2 DAV = 1
-		lda $e840					; load VIA port B
-		and #$c1					; isolate NDAC, NRFD, DAV
-		cmp #$c1					; check if 1 ?
-		bne ie_bad					; if not1: IEEE bad !
-		lda #'o'
-		sta screen+line* 10 + 14
-		lda #'k'
-		sta screen+line* 10 + 15
-		lda screen+line* 10 + 16
-		cmp #'d'
-		bne PETAnimation
-		lda #'?'
-		sta screen+line* 10 + 16
-		bne PETAnimation
+;	bpl ie_bad					; if bit #7 CA1 flag not 1; ATN bad !
+	lda #$32 + 4 + 8				; bit #3 = Cx2
+	sta $e821					; set PIA2 port A CA2 NDAC = 1
+	sta $e823					; set PIA2 port B CB2 DAV = 1
+	lda $e840					; load VIA port B
+	and #$c1					; isolate NDAC, NRFD, DAV
+	cmp #$c1					; check if 1 ?
+	bne ie_bad					; if not1: IEEE bad !
+	lda #'o'
+	sta screen+line* 10 + 14
+	lda #'k'
+	sta screen+line* 10 + 15
+	lda screen+line* 10 + 16
+	cmp #'d'
+	bne PETAnimation
+	lda #'?'
+	sta screen+line* 10 + 16
+	bne PETAnimation
 ie_bad: ldx #'b'
-		stx screen+line* 10 + 14
-		dex							; 'a'
-		stx screen+line* 10 + 15
-		lda #'d'
-		sta screen+line* 10 + 16
+	stx screen+line* 10 + 14
+	dex							; 'a'
+	stx screen+line* 10 + 15
+	lda #'d'
+	sta screen+line* 10 + 16
 PETAnimation:
-		ldy screen+line* 16 + 39
-		ldx #39
--		lda screen+line* 16 -  1,x
-		sta screen+line* 16,x
-		dex
-		bne -
-		sty screen+line* 16
-		ldy screen+line* 17 + 39
-		ldx #39
--		lda screen+line* 17 -  1,x
-		sta screen+line* 17,x
-		dex
-		bne -
-		sty screen+line* 17
-		ldy screen+line* 18 + 39
-		ldx #39
--		lda screen+line* 18 -  1,x
-		sta screen+line* 18,x
-		dex
-		bne -
-		sty screen+line* 18
-		jmp TestH1
+	ldy screen+line* 16 + 39
+	ldx #39
+-	lda screen+line* 16 -  1,x
+	sta screen+line* 16,x
+	dex
+	bne -
+	sty screen+line* 16
+	ldy screen+line* 17 + 39
+	ldx #39
+-	lda screen+line* 17 -  1,x
+	sta screen+line* 17,x
+	dex
+	bne -
+	sty screen+line* 17
+	ldy screen+line* 18 + 39
+	ldx #39
+-	lda screen+line* 18 -  1,x
+	sta screen+line* 18,x
+	dex
+	bne -
+	sty screen+line* 18
+	jmp TestH1
 
 *= $ff99
 pet1:	!byte $ea, $ec, $61, $ec, $7e, $fb	; PET-graphics
 pet2:	!byte $7e, $ec, $7e, $ec, $7e, $e1
 pet3:	!byte $20, $7e, $20, $e2, $7e, $7c
-		!byte $20
+	!byte $20
 
 *= $ffac
 title 	!scr "pet *2001test* v1.3   test h7-rom in h6!"
 title2	!scr "chksum8+ 6540-   6550 i/j (c) vossi 2020"
 
 vectors:
-		!byte $00, $f8, $00, $f8
+	!byte $00, $f8, $00, $f8
